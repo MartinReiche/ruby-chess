@@ -2,7 +2,8 @@ require 'spec_helper'
 require 'chess'
 
 describe Player do
-  before(:all) { @player = Player.new('Foo') }
+  subject { Player.new(1) }
+  before(:all) { @player = Player.new(1,'Foo') }
 
   it { is_expected.to respond_to(:name) }
   it { is_expected.to respond_to(:id) }
