@@ -6,6 +6,7 @@ describe Figure do
   it { is_expected.to respond_to(:player) }
   it { is_expected.to respond_to(:player_id) }
   it { is_expected.to respond_to(:coords) }
+  it { is_expected.to respond_to(:color) }
 end
 
 describe Knight do
@@ -31,6 +32,9 @@ describe Knight do
     end
     it "has coordinates" do
       expect(@knight.coords).to eq([4,4])
+    end
+    it "should have the color of the player" do
+      expect(@knight.color).to eq(@player.color)
     end
   end
 end
