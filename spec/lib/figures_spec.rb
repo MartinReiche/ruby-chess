@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'figures'
+require 'chess'
 
 describe Figure do
   it { is_expected.to respond_to(:name) }

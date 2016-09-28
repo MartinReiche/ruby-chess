@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'board'
+require 'chess'
 
 describe Board do
   it { is_expected.to respond_to(:fields) }
