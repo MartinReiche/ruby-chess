@@ -3,18 +3,20 @@ require 'board'
 
 describe Board do
   it { is_expected.to respond_to(:fields) }
-
-  describe '.coords' do
-
+  
+  describe '.coords_a' do
+    before(:all) { @board = Board.new }
+    it "returns an array with coordinate tuples" do
+      expect(@board.fields).to be_a(Array)
+      expect(@board.coords_a[1][0]).to eq([1,0])
+    end
   end
-  describe '.rows' do
-
-  end
-  describe '.cols' do
-
-  end
-  describe '.figures' do
-
+  describe '.figures_a' do
+    before(:all) { @board = Board.new }
+    it "returns an array with the figure values" do
+      expect(@board.fields).to be_a(Array)
+      expect(@board.figures_a[7][7]).to be_nil
+    end
   end
 end
 
