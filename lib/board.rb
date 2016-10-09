@@ -11,6 +11,19 @@ class Board
       end
     end
   end
+  # Add a figure of 'type' to coordinates of 'coords'
+  def add_figure(coords,type,player)
+    case type.downcase
+    when 'knight' then figure = Knight.new(player,coords)
+    else
+      return 'Wrong figure type'
+    end
+    self.fields[coords[0]][coords[1]].figure = figure
+  end
+  # Remove figure on given 'coords' 
+  def rm_figure(coords)
+    self.fields[coords[0]][coords[1]].figure = nil
+  end
   # Return an array with tuples of coordinates for the fields
   def coords_a
     coords = []
@@ -40,7 +53,10 @@ class Board
   def print_fields
     figs = self.figures_a
     8.times do |row|
-      puts figs[row].inspect
+      8.times do |col|
+        figs[row][col].nil? ? (print "  nil  ") : (print " #{figs[row][col].type} ")
+      end
+      print "\n"
     end
   end
 end
@@ -48,7 +64,8 @@ end
 # Field of chess board. Stores corrdinates and a reference to the current
 # figure on the field.
 class Field
-  attr_reader :row, :col, :coord, :figure
+  attr_reader :row, :col, :coord
+  attr_accessor :figure
   def initialize(coordinates)
     @@arg_err.call if (coordinates.class != Array) or (coordinates.length != 2) 
     @coord = coordinates

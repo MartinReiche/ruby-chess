@@ -3,12 +3,13 @@ require 'chess'
 
 describe Figure do
   before(:each) { @player = Player.new(1) }
-  subject { Figure.new(@player,[1,1]) }
+  subject { Figure.new() }
   it { is_expected.to respond_to(:name) }
   it { is_expected.to respond_to(:player) }
   it { is_expected.to respond_to(:player_id) }
   it { is_expected.to respond_to(:coords) }
   it { is_expected.to respond_to(:color) }
+  it { is_expected.to respond_to(:legal) }
 end
 
 describe Knight do
@@ -20,9 +21,6 @@ describe Knight do
       @player = Player.new(1)
       @knight = Knight.new(@player,[4,4])
     end
-    # it "is called 'Knight'" do
-    #   expect(@knight.name).to eq("Knight")
-    # end
     it "has a type of Knight" do
       expect(@knight).to be_a(Knight)
     end

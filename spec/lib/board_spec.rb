@@ -4,6 +4,31 @@ require 'chess'
 describe Board do
   it { is_expected.to respond_to(:fields) }
   
+  describe '.add_figure' do
+    before(:all) do
+      @board = Board.new
+      @player = Player.new(1)
+      @board.add_figure([0,0],'Knight',@player)
+    end
+    it "correctly initializes a knight" do
+      expect(@board.fields[0][0].figure.type).to eq(Knight)
+      expect(@board.fields[0][1].figure).to be nil
+    end
+  end
+
+  describe '.rm_figure' do
+    before(:all) do
+      @board = Board.new
+      @player = Player.new(1)
+      @board.add_figure([5,2],'Knight',@player)
+    end
+    it "correctly removes a figure from the board" do
+      expect(@board.fields[5][2].figure.type).to eq(Knight)
+      @board.rm_figure([5,2])
+      expect(@board.fields[5][2].figure).to be nil
+    end
+  end
+
   describe '.coords_a' do
     before(:all) { @board = Board.new }
     it "returns an array with coordinate tuples" do
