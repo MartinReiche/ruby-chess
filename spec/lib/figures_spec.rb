@@ -9,7 +9,7 @@ describe Figure do
   it { is_expected.to respond_to(:player_id) }
   it { is_expected.to respond_to(:coords) }
   it { is_expected.to respond_to(:color) }
-  it { is_expected.to respond_to(:legal) }
+  it { is_expected.to respond_to(:translate) }
 end
 
 describe Knight do
@@ -35,6 +35,24 @@ describe Knight do
     end
     it "should have the color of the player" do
       expect(@knight.color).to eq(@player.color)
+    end
+  end
+  describe '.steps_to' do
+    before(:all) do
+      @player = Player.new(1)
+      @knight = Knight.new(@player,[4,4])
+    end
+    context "when valid coordinates are given" do
+      it "shows a single valid step" do
+        expect(@knight.steps_to([6,5])).to eq([6,5])
+      end
+      it "shows a cascade of steps to given cordinates" do
+        expect(@knight.steps_to([6,9])).to eq([[5,6],[7,7],[6,9]])
+      end
+    end
+    context "when invalid coordinates are given" do
+      it "returns nil when of the board"
+      it "returns nil when occupied by own figure"
     end
   end
 end

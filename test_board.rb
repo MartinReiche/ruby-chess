@@ -3,11 +3,9 @@ require_relative './lib/chess'
 board = Board.new
 
 player = Player.new(1)
-board.add_figure([4,3],'Knight',player)
+board.add_figure([1,2],'Knight',player)
 
 
-# puts board.fields[0][5].inspect
-
-board.print_fields
-puts board.fields[4][3].figure.inspect
+a = board.fields[1][2].figure.steps_to([3,4])
+puts a.inspect
 # puts knight.inspect
