@@ -38,6 +38,11 @@ class Figure
   end
 end
 
+# Class for figure Pawn
+class Pawn < Figure
+  
+end
+
 # Class for figure of Queen
 class Queen < Figure
   # Initialize a new Queen for given player at given coords 
