@@ -15,6 +15,7 @@ class Board
   def add_figure(coords,type,player)
     case type.downcase
     when 'knight' then figure = Knight.new(player,coords)
+    when 'queen' then figure = Queen.new(player,coords)
     else
       return 'Wrong figure type'
     end

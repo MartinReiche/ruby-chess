@@ -1,45 +1,56 @@
-# Add docu
+# Parent class for chess figure
 class Figure
-  attr_reader :name, :player, :player_id, :coords, :color, :type
-  attr_reader :translate, :legal
-
+  attr_reader :name, :player_id, :coords, :color
+  # Assign fure unspecific attributes upon initilization 
   def get_attr(player,coords)
-    @player = player
-    @player_id = @player.id
-    @color = @player.color
+    @player_id = player.id
+    @color = player.color
     @coords = coords
+  end
+  # check if the given position is a legal move 
+  def legal?(to,board)
+    @all_figs = board.figures_a
+    legal.include?(to)
   end
 end
 
-class Knight < Figure
+# Class for figure of Queen
+class Queen < Figure
+  # Initialize a new Queen for given player at given coords 
   def initialize(player,coords)
     self.get_attr(player,coords)
-    @type = self.class
-    @translate = { 2 => [1,-1], -2 => [1,-1], 1 => [2, -2], -1 => [2,-2] }
   end
-
-  def steps_to(to,from=@coords)
-    # positions(from).each { |i| return i if i == to }
-
-    nodes = {from => positions }
-    
-    # return nil
-  end
-
   private
-
-  def positions(from=@coords)
+  def legal
     pos = []
-    @translate.keys.each do |first|
-      if (0..7).include?(from[0] + first)
-        @translate[first].each do |sec|
-          if (0..7).include?(from[1] + sec)
-            pos << [from[0] + first, from[1] + sec]
+    translate = [[1,0],[1,1],[0,1],[-1,1],[-1,0],[-1,-1],[0,-1],[1,-1]]
+    
+
+    return pos
+  end
+end
+
+# Class for figure of Knight 
+class Knight < Figure
+  # Initialize a new Knight for given player at given coords 
+  def initialize(player,coords)
+    self.get_attr(player,coords)
+  end
+  private
+  def legal
+    position = []
+    translate = { 2 => [1,-1], -2 => [1,-1], 1 => [2, -2], -1 => [2,-2] }
+    translate.keys.each do |first|
+      if (0..7).include?(@coords[0] + first)
+        translate[first].each do |sec|
+          if (0..7).include?(@coords[1] + sec)
+            next_pos = [@coords[0] + first, @coords[1] + sec]
+            next_field = @all_figs[next_pos[0]][next_pos[1]]
+            position << next_pos if next_field.nil? or next_field.player_id != @player_id
           end
         end
       end
     end
-    pos.empty? ? (return nil) : (return pos)
+    return position
   end
-  
 end
