@@ -19,13 +19,29 @@ class Queen < Figure
   # Initialize a new Queen for given player at given coords 
   def initialize(player,coords)
     self.get_attr(player,coords)
+    @translate = [[1,0],[1,1],[0,1],[-1,1],[-1,0],[-1,-1],[0,-1],[1,-1]]
   end
   private
   def legal
     pos = []
-    translate = [[1,0],[1,1],[0,1],[-1,1],[-1,0],[-1,-1],[0,-1],[1,-1]]
-    
-
+    @translate.each do |t|
+      valid = true
+      move = @coords
+      while valid
+        move = move.zip(t).map { |i,j| i+j }
+        if (0..7).include?(move[0]) and (0..7).include?(move[1])
+          next_field = @all_figs[move[0]][move[1]]
+          if !next_field.nil? 
+            pos << move if next_field.player_id != @player_id
+            valid = false
+          else
+            pos << move
+          end
+        else
+          valid = false
+        end
+      end
+    end
     return pos
   end
 end
@@ -35,14 +51,14 @@ class Knight < Figure
   # Initialize a new Knight for given player at given coords 
   def initialize(player,coords)
     self.get_attr(player,coords)
+    @translate = { 2 => [1,-1], -2 => [1,-1], 1 => [2, -2], -1 => [2,-2] }
   end
   private
   def legal
     position = []
-    translate = { 2 => [1,-1], -2 => [1,-1], 1 => [2, -2], -1 => [2,-2] }
-    translate.keys.each do |first|
+    @translate.keys.each do |first|
       if (0..7).include?(@coords[0] + first)
-        translate[first].each do |sec|
+        @translate[first].each do |sec|
           if (0..7).include?(@coords[1] + sec)
             next_pos = [@coords[0] + first, @coords[1] + sec]
             next_field = @all_figs[next_pos[0]][next_pos[1]]

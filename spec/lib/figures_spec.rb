@@ -16,38 +16,36 @@ describe Queen do
   end
   describe '.legal?' do
     before(:all) do
-      @player = Player.new(1)
+      @player1 = Player.new(1)
       @player2 = Player.new(2)
       @board = Board.new
       @board.add_figure([1,4],'queen',@player1)
       @board.add_figure([3,5],'knight',@player1)
       @board.add_figure([4,6],'knight',@player2)
-      @queen = Queen.new(@player,[4,4])
+      @queen = Queen.new(@player1,[4,4])
     end
-    it "should return true for a legal horizontal move" do
+    it "returns true for a legal horizontal move" do
       expect(@queen.legal?([4,1],@board)).to be true
     end
-    it "should return true for a legal diagonal move" do
+    it "returns true for a legal diagonal move" do
       expect(@queen.legal?([4,1],@board)).to be true
     end
-    it "should return true for a legal vertical move" do
+    it "returns true for a legal vertical move" do
       expect(@queen.legal?([7,4],@board)).to be true
     end
-
-    it "should return true if target is occupied by enemy figure" do
+    it "returns true if target is occupied by enemy figure" do
       expect(@queen.legal?([7,4],@board)).to be true
     end
-
-    it "should return false for an illegal move" do
+    it "returns false for an illegal move" do
       expect(@queen.legal?([6,3],@board)).to be false
     end
-    it "should return false if target is blocked by own figure" do
+    it "returns false if target is blocked by own figure" do
       expect(@queen.legal?([3,5],@board)).to be false
     end
-    it "should return false if path is blocked by own figure" do
+    it "returns false if path is blocked by own figure" do
       expect(@queen.legal?([0,4],@board)).to be false
     end
-    it "should return false if path is blocked by enemy figure" do
+    it "returns false if path is blocked by enemy figure" do
       expect(@queen.legal?([4,7],@board)).to be false
     end
   end
