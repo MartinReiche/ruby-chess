@@ -10,6 +10,46 @@ describe Figure do
   it { is_expected.to respond_to(:color) }
 end
 
+describe Bishop do
+  it "inherits from Figure" do
+    expect(Bishop).to be < Figure
+  end
+  describe '.legal?' do
+    before(:all) do
+      @player1 = Player.new(1)
+      @player2 = Player.new(2)
+      @board = Board.new
+      @board.add_figure([1,5],'queen',@player1)
+      @board.add_figure([3,0],'knight',@player2)
+      @board.add_figure([6,3],'bishop',@player2)
+      @bishop = Bishop.new(@player1,[4,1])
+    end
+    it "returns true for a legal diagonal move" do
+      expect(@bishop.legal?([5,0],@board)).to be true
+      expect(@bishop.legal?([2,3],@board)).to be true
+    end
+    it "returns true if target is occupied by enemy figure" do
+      expect(@bishop.legal?([3,0],@board)).to be true
+      expect(@bishop.legal?([6,3],@board)).to be true
+    end
+    it "returns false for an illegal move" do
+      expect(@bishop.legal?([4,5],@board)).to be false
+      expect(@bishop.legal?([6,1],@board)).to be false
+      expect(@bishop.legal?([3,3],@board)).to be false
+    end
+    it "returns false if target is blocked by own figure" do
+      expect(@bishop.legal?([1,5],@board)).to be false
+    end
+    it "returns false if path is blocked by own figure" do
+      expect(@bishop.legal?([0,6],@board)).to be false
+    end
+    it "returns false if path is blocked by enemy figure" do
+      expect(@bishop.legal?([7,4],@board)).to be false
+    end
+  end
+end
+
+
 describe Rook do
   it "inherits from Figure" do
     expect(Rook).to be < Figure

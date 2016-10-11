@@ -50,6 +50,19 @@ class Queen < Figure
   end
 end
 
+# Class for figure of Bishop
+class Bishop < Figure
+  # Initialize a new Bishop for given player at given coords 
+  def initialize(player,coords)
+    self.get_attr(player,coords)
+    @translate = [[1,1],[-1,1],[-1,-1],[1,-1]]
+  end
+  private
+  def legal
+    qbr_legal(@translate)
+  end
+end
+
 # Class for figure of Rook
 class Rook < Figure
   # Initialize a new Rook for given player at given coords 
@@ -60,7 +73,6 @@ class Rook < Figure
   private
   def legal
     qbr_legal(@translate)
-    
   end
 end
 
