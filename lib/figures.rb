@@ -12,13 +12,14 @@ class Figure
     @all_figs = board.figures_a
     legal.include?(to)
   end
-  # Check legal moves for Queen, Bishop and Rook
-  def qbr_legal(translate)
+  # Check legal moves for Queen, Bishop and Rook and king
+  def qbr_legal(translate,king=false)
     pos = []
     @translate.each do |t|
       valid = true
       move = @coords
       while valid
+        valid = false if king
         move = move.zip(t).map { |i,j| i+j }
         if (0..7).include?(move[0]) and (0..7).include?(move[1])
           next_field = @all_figs[move[0]][move[1]]
@@ -47,6 +48,14 @@ class Queen < Figure
   private
   def legal
     qbr_legal(@translate)
+  end
+end
+
+# Class for figure of King
+class King < Queen
+  private
+  def legal
+    qbr_legal(@translate,true)
   end
 end
 

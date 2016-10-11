@@ -10,6 +10,40 @@ describe Figure do
   it { is_expected.to respond_to(:color) }
 end
 
+describe King do
+  it "inherits from Figure" do
+    expect(King).to be < Queen
+  end
+  describe '.legal?' do
+    before(:all) do
+      @player1 = Player.new(1)
+      @player2 = Player.new(2)
+      @board = Board.new
+      @board.add_figure([2,4],'queen',@player1)
+      @board.add_figure([3,3],'knight',@player2)
+      @king = King.new(@player1,[3,4])
+    end
+    it "returns true for a legal diagonal move" do
+      expect(@king.legal?([2,5],@board)).to be true
+      expect(@king.legal?([2,3],@board)).to be true
+      expect(@king.legal?([4,5],@board)).to be true
+      expect(@king.legal?([4,3],@board)).to be true
+    end
+    it "returns true if target is occupied by enemy figure" do
+      expect(@king.legal?([3,3],@board)).to be true
+    end
+    it "returns false for an illegal move" do
+      expect(@king.legal?([0,7],@board)).to be false
+      expect(@king.legal?([1,1],@board)).to be false
+      expect(@king.legal?([4,6],@board)).to be false
+      expect(@king.legal?([5,6],@board)).to be false
+    end
+    it "returns false if target is blocked by own figure" do
+      expect(@king.legal?([2,4],@board)).to be false
+    end
+  end
+end
+
 describe Bishop do
   it "inherits from Figure" do
     expect(Bishop).to be < Figure
