@@ -19,14 +19,16 @@ class Knight < Figure
   end
 
   def steps_to(to,from=@coords)
-    positions(from).each { |i| return i if i == to }
+    # positions(from).each { |i| return i if i == to }
 
+    nodes = {from => positions }
     
+    # return nil
   end
 
   private
 
-  def positions(from)
+  def positions(from=@coords)
     pos = []
     @translate.keys.each do |first|
       if (0..7).include?(from[0] + first)
