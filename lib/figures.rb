@@ -12,17 +12,8 @@ class Figure
     @all_figs = board.figures_a
     legal.include?(to)
   end
-end
-
-# Class for figure of Queen
-class Queen < Figure
-  # Initialize a new Queen for given player at given coords 
-  def initialize(player,coords)
-    self.get_attr(player,coords)
-    @translate = [[1,0],[1,1],[0,1],[-1,1],[-1,0],[-1,-1],[0,-1],[1,-1]]
-  end
-  private
-  def legal
+  # Check legal moves for Queen, Bishop and Rook
+  def qbr_legal(translate)
     pos = []
     @translate.each do |t|
       valid = true
@@ -43,6 +34,19 @@ class Queen < Figure
       end
     end
     return pos
+  end
+end
+
+# Class for figure of Queen
+class Queen < Figure
+  # Initialize a new Queen for given player at given coords 
+  def initialize(player,coords)
+    self.get_attr(player,coords)
+    @translate = [[1,0],[1,1],[0,1],[-1,1],[-1,0],[-1,-1],[0,-1],[1,-1]]
+  end
+  private
+  def legal
+    qbr_legal(@translate)
   end
 end
 
