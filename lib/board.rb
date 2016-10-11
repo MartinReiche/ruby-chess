@@ -16,6 +16,10 @@ class Board
     case type.downcase
     when 'knight' then figure = Knight.new(player,coords)
     when 'queen' then figure = Queen.new(player,coords)
+    when 'rook' then figure = Rook.new(player,coords)
+    when 'bishop' then figure = Bishop.new(player,coords)
+    when 'king' then figure = King.new(player,coords)
+    when 'pawn' then figure = Pawn.new(player,coords)
     else
       return 'Wrong figure type'
     end
