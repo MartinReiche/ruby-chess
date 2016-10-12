@@ -13,6 +13,15 @@ class Figure
     @all_figs = board.figures_a
     legal.include?(to)
   end
+  # Move a figure aon a given board
+  def move(to,board)
+    if self.legal?(to,board)
+      @coords = to
+      @moved = true
+    else
+      return false
+    end
+  end
   # Check legal moves for Queen, Bishop and Rook and king
   def qbr_legal(king=false,pawn=false)
     pos = []
@@ -48,7 +57,7 @@ class Pawn < Figure
   end
   private
   def legal
-    @translate = @translate[0] if @moved
+    @translate = [@translate[0]] if @moved
     pos = qbr_legal(true,true)
     move = []
     @attack.each { |a| move << @coords.zip(a).map { |i,j| i+j } }

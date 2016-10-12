@@ -11,7 +11,24 @@ describe Figure do
   it { is_expected.to respond_to(:moved) }
 
   describe '.move' do
-    it "changes moved to true after move"
+    before(:all) do
+      @player1 = Player.new(1)
+      @board = Board.new
+      @white = Pawn.new(@player1,[1,1])
+    end
+    it "moved is false before first move" do
+      expect(@white.moved).to be false
+    end
+    it "changes moved to true after move" do
+      @updated_board = @white.move([2,1],@board)
+      expect(@white.moved).to be true
+    end
+    it "changes the coordinates of the figure" do
+      expect(@white.coords).to eq([2,1])
+    end
+    it "returns false for an illegal move" do
+      expect(@white.move([7,7],@board)).to be false
+    end
   end
 end
 
@@ -76,7 +93,20 @@ describe Pawn do
     end
   end
   describe ".move" do
-    it "changes moved to true after move"
+    before(:all) do
+      @player1 = Player.new(1)
+      @board = Board.new
+      @white = Pawn.new(@player1,[1,2])
+    end
+    it "it can move forward 2 fields before initial move" do
+      expect(@white.legal?([2,2],@board)).to be true
+      expect(@white.legal?([3,2],@board)).to be true
+    end
+    it "it cannot move forward 2 fields after initial move" do
+      @white.move([2,2],@board)
+      expect(@white.legal?([3,2],@board)).to be true
+      expect(@white.legal?([4,2],@board)).to be false
+    end
   end
 end
 
