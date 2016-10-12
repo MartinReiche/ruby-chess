@@ -14,7 +14,7 @@ class Figure
     legal.include?(to)
   end
   # Check legal moves for Queen, Bishop and Rook and king
-  def qbr_legal(translate,king=false)
+  def qbr_legal(king=false,pawn=false)
     pos = []
     @translate.each do |t|
       valid = true
@@ -25,7 +25,7 @@ class Figure
         if (0..7).include?(move[0]) and (0..7).include?(move[1])
           next_field = @all_figs[move[0]][move[1]]
           if !next_field.nil? 
-            pos << move if next_field.player_id != @player_id
+            pos << move if next_field.player_id != @player_id and !pawn
             valid = false
           else
             pos << move
@@ -43,8 +43,22 @@ end
 class Pawn < Figure
   def initialize(player,coords)
     self.get_attr(player,coords)
-    @translate = [[1,0],[1,1],[1,-1],[2,0]] if @color == "white"
-    @translate = [[-1,0],[-1,1],[-1,-1],[-2,0]] if @color == "black"
+    @translate, @attack = [[1,0],[2,0]], [[1,1],[1,-1]] if @color == "white"
+    @translate, @attack = [[-1,0],[-2,0]], [[-1,1],[-1,-1]] if @color == "black"
+  end
+  private
+  def legal
+    @translate = @translate[0] if @moved
+    pos = qbr_legal(true,true)
+    move = []
+    @attack.each { |a| move << @coords.zip(a).map { |i,j| i+j } }
+    move.each do |i|
+      unless @all_figs[i[0]][i[1]].nil?
+        pos << i if @all_figs[i[0]][i[1]].player_id != @player_id
+      end
+    end
+    
+    return pos
   end
 end
 
@@ -57,7 +71,7 @@ class Queen < Figure
   end
   private
   def legal
-    qbr_legal(@translate)
+    qbr_legal
   end
 end
 
@@ -65,7 +79,7 @@ end
 class King < Queen
   private
   def legal
-    qbr_legal(@translate,true)
+    qbr_legal(true)
   end
 end
 
@@ -78,7 +92,8 @@ class Bishop < Figure
   end
   private
   def legal
-    qbr_legal(@translate)
+    pos = qbr_legal
+    
   end
 end
 
@@ -91,7 +106,7 @@ class Rook < Figure
   end
   private
   def legal
-    qbr_legal(@translate)
+    qbr_legal
   end
 end
 

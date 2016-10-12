@@ -9,6 +9,10 @@ describe Figure do
   it { is_expected.to respond_to(:coords) }
   it { is_expected.to respond_to(:color) }
   it { is_expected.to respond_to(:moved) }
+
+  describe '.move' do
+    it "changes moved to true after move"
+  end
 end
 
 describe Pawn do
@@ -36,11 +40,11 @@ describe Pawn do
       @player1 = Player.new(1)
       @player2 = Player.new(2)
       @board = Board.new
-      @board.add_figure([2,4],'knight',@player1)
-      @board.add_figure([5,1],'knight',@player2)
-      @board.add_figure([5,2],'knight',@player1)
-      @black = Pawn.new(@player1,[6,2])
-      @white = Pawn.new(@player2,[1,4])
+      @board.add_figure([2,4],'knight',@player2)
+      @board.add_figure([5,1],'knight',@player1)
+      @board.add_figure([2,5],'knight',@player1)
+      @white = Pawn.new(@player1,[1,4])
+      @black = Pawn.new(@player2,[6,2])
     end
     it "returns true for a legal vertical move" do
       expect(@black.legal?([5,2],@board)).to be true
@@ -54,7 +58,6 @@ describe Pawn do
     end
     it "returns false for an illegal move" do
       expect(@white.legal?([2,3],@board)).to be false
-      expect(@white.legal?([2,4],@board)).to be false
       expect(@white.legal?([2,5],@board)).to be false
       expect(@white.legal?([1,3],@board)).to be false
       expect(@white.legal?([1,5],@board)).to be false
@@ -72,8 +75,8 @@ describe Pawn do
       expect(@white.legal?([2,5],@board)).to be false
     end
   end
-  describe "move" do
-    
+  describe ".move" do
+    it "changes moved to true after move"
   end
 end
 
