@@ -1,11 +1,12 @@
 # Parent class for chess figure
 class Figure
-  attr_reader :name, :player_id, :coords, :color
+  attr_reader :name, :player_id, :coords, :color, :moved
   # Assign fure unspecific attributes upon initilization 
   def get_attr(player,coords)
     @player_id = player.id
     @color = player.color
     @coords = coords
+    @moved = false
   end
   # check if the given position is a legal move 
   def legal?(to,board)
@@ -40,7 +41,11 @@ end
 
 # Class for figure Pawn
 class Pawn < Figure
-  
+  def initialize(player,coords)
+    self.get_attr(player,coords)
+    @translate = [[1,0],[1,1],[1,-1],[2,0]] if @color == "white"
+    @translate = [[-1,0],[-1,1],[-1,-1],[-2,0]] if @color == "black"
+  end
 end
 
 # Class for figure of Queen
