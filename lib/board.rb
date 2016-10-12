@@ -11,6 +11,18 @@ class Board
       end
     end
   end
+  # Move a figure from one coordinate to the other
+  def move(from,to)
+    fig = @fields[from[0]][from[1]].figure
+    if fig.nil?
+      return false
+    else
+      return false unless fig.move(to,self)
+      @fields[to[0]][to[1]].figure = fig
+      self.rm_figure(from)
+      return self
+    end
+  end
   # Add a figure of 'type' to coordinates of 'coords'
   def add_figure(coords,type,player)
     case type.downcase

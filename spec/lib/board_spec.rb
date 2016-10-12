@@ -43,8 +43,27 @@ describe Board do
       expect(@board.figures_a[7][7]).to be_nil
     end
   end
+  describe '.move' do
+    before(:all) do
+      @board = Board.new
+      @player = Player.new(1)
+      @board.add_figure([1,1],'pawn',@player)
+    end
+    it "returns false if from field is empty" do
+      expect(@board.move([2,2],[4,5])).to be false
+    end
+    it "returns false for an illegal move" do
+      expect(@board.move([1,1],[4,5])).to be false
+    end
+    it "returns the updated board for a legal move" do
+      expect(@board.fields[1][1].figure).to be_a(Pawn)
+      expect(@board.fields[3][1].figure).to be nil
+      @board = @board.move([1,1],[3,1])
+      expect(@board.fields[1][1].figure).to be nil
+      expect(@board.fields[3][1].figure).to be_a(Pawn)
+    end
+  end
 end
-
 
 describe Field do
   subject { Field.new([0,0]) }
