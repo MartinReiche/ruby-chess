@@ -13,6 +13,8 @@ class Board
   end
   # Move a figure from one coordinate to the other
   def move(from,to)
+    from = to_coords(from)
+    to = to_coords(to)
     fig = @fields[from[0]][from[1]].figure
     if fig.nil?
       return false
@@ -74,6 +76,22 @@ class Board
         figs[row][col].nil? ? (print "  nil  ") : (print " #{figs[row][col].type} ")
       end
       print "\n"
+    end
+  end
+
+  private
+  def to_coords(str)
+    str = str.downcase.strip.chars
+    coords = []
+    if str.length == 2
+      str.each do |c|
+        if (c =~ /\A\d+\z/ ? true : false)
+          coords[0] = (c.to_i-1)
+        else
+          coords[1] = ("a".."z").find_index(c) 
+        end
+      end
+      return coords
     end
   end
 end
