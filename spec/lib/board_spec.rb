@@ -8,7 +8,7 @@ describe Board do
     before(:all) do
       @board = Board.new
       @player = Player.new(1)
-      @board.add_figure([0,0],'Knight',@player)
+      @board.add_figure('a1','Knight',@player)
     end
     it "correctly initializes a knight" do
       expect(@board.fields[0][0].figure.class).to eq(Knight)
@@ -20,7 +20,7 @@ describe Board do
     before(:all) do
       @board = Board.new
       @player = Player.new(1)
-      @board.add_figure([5,2],'Knight',@player)
+      @board.add_figure('c6','Knight',@player)
     end
     it "correctly removes a figure from the board" do
       expect(@board.fields[5][2].figure.class).to eq(Knight)
@@ -47,7 +47,7 @@ describe Board do
     before(:all) do
       @board = Board.new
       @player = Player.new(1)
-      @board.add_figure([1,1],'pawn',@player)
+      @board.add_figure('b2','pawn',@player)
     end
     it "returns false if from field is empty" do
       expect(@board.move('c3','e6')).to be false

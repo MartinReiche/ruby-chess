@@ -26,7 +26,8 @@ class Board
     end
   end
   # Add a figure of 'type' to coordinates of 'coords'
-  def add_figure(coords,type,player)
+  def add_figure(str,type,player)
+    coords = to_coords(str)
     case type.downcase
     when 'knight' then figure = Knight.new(player,coords)
     when 'queen' then figure = Queen.new(player,coords)
