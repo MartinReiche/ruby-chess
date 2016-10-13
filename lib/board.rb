@@ -56,41 +56,19 @@ class Board
   def rm_figure(coords)
     self.fields[coords[0]][coords[1]].figure = nil
   end
-  # Return an array with tuples of coordinates for the fields
-  def coords_a
-    coords = []
-    8.times do |row|
-      coords << []
-      8.times { |col| coords[row] << [row, col] }
-    end
-    return coords
-  end
-  # Print coordinates 
-  def print_coords
-    coords = self.coords_a
-    8.times do |row|
-      puts coords[row].inspect
-    end
-  end
   # Return an array with the cuurent figures of the fields
   def figures_a
     figs = []
     8.times do |row|
       figs << []
-      8.times { |col| figs[row] << self.fields[row][col].figure }
+      8.times do |col|
+        figs[row] << self.fields[row][col].figure
+        # figs << f unless f.nil?
+      end
     end
     return figs
   end
-  # Print figures on the board
-  def print_fields
-    figs = self.figures_a
-    8.times do |row|
-      8.times do |col|
-        figs[row][col].nil? ? (print "  nil  ") : (print " #{figs[row][col].type} ")
-      end
-      print "\n"
-    end
-  end
+
 
   private
   def get_figs(id)
