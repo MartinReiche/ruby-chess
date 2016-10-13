@@ -1,8 +1,9 @@
 # Add documentaion
 class Board
-  attr_reader :fields, :player
+  attr_reader :fields, :active, :passive, :player
   # Initilaize new empty board object tith 8x8 empty fields
   def initialize
+    @ids = [1,2]
     @fields = []
     8.times.each do |row|
       @fields << []
@@ -15,7 +16,7 @@ class Board
   def check
     2.times do |player|
       figs = get_figs(player)
-      
+      # enemy_king = get_king(
     end
   end
   # Move a figure from one coordinate to the other
@@ -34,7 +35,7 @@ class Board
     end
   end
   # Set the current player
-  def set_player(player)
+  def set_player(id)
     @player = player
   end
   # Add a figure of 'type' to coordinates of 'coords'
@@ -63,17 +64,31 @@ class Board
       figs << []
       8.times do |col|
         figs[row] << self.fields[row][col].figure
-        # figs << f unless f.nil?
       end
     end
     return figs
   end
 
-
   private
   def get_figs(id)
     figs = figures_a
-    figs = figs.each { |f| f if f.player_id == id }
+    player_figs = []
+    figs.each do |row|
+      row.each do |f|
+        unless f.nil?
+          if figure.nil?
+            player_figs << f if f.player_id == id
+          else
+            player_figs << f if f.player_id == id and f.class == figure
+          end
+        end
+      end
+    end
+    return player_figs
+  end
+  def get_king(id)
+    figs = get_figs(id)
+    figs.each 
   end
   def to_coords(str)
     str = str.downcase.strip.chars
