@@ -69,13 +69,6 @@ describe Board do
       expect(@board.fields[5][2].figure).to be nil
     end
   end
-  describe '.coords_a' do
-    before(:all) { @board = Board.new }
-    it "returns an array with coordinate tuples" do
-      expect(@board.fields).to be_a(Array)
-      expect(@board.coords_a[1][0]).to eq([1,0])
-    end
-  end
   describe '.figures_a' do
     before(:all) { @board = Board.new }
     it "returns an array with the figure values" do
