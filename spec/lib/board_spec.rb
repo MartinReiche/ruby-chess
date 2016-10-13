@@ -6,9 +6,24 @@ describe Board do
   it { is_expected.to respond_to(:player) }
 
   describe '.check' do
-    it "returns false if none of the Kings is checked"
-    it "returns 1 if the Kings of Player 1 is checked"
-    it "returns 2 if the Kings of Player 2 is checked" 
+    before(:all) do
+      @board = Board.new
+      @player1 = Player.new(1)
+      @player2 = Player.new(2)
+      @board.add_figure('c3','king',@player1)
+      @board.add_figure('a7','king',@player2)
+    end
+    it "returns false if none of the Kings is checked" do
+      expect(@board.check).to be false
+    end
+    it "returns 1 if the Kings of Player 1 is checked" do
+      @board.add_figure('c7','queen',@player2)
+      expect(@board.check).to eq(1)
+    end
+    it "returns 2 if the Kings of Player 2 is checked"  do
+      @board.add_figure('b5','knight',@player1)
+      expect(@board.check).to eq(2)
+    end
   end
 
   describe '.mate' do

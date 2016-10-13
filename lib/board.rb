@@ -11,6 +11,13 @@ class Board
       end
     end
   end
+  # Check whether any king is checked
+  def check
+    2.times do |player|
+      figs = get_figs(player)
+      
+    end
+  end
   # Move a figure from one coordinate to the other
   def move(from,to)
     from = to_coords(from)
@@ -86,6 +93,10 @@ class Board
   end
 
   private
+  def get_figs(id)
+    figs = figures_a
+    figs = figs.each { |f| f if f.player_id == id }
+  end
   def to_coords(str)
     str = str.downcase.strip.chars
     coords = []
