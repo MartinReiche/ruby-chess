@@ -13,7 +13,7 @@ class Figure
     @all_figs = board.figures_a
     legal.include?(to)
   end
-  # Move a figure aon a given board
+  # Move a figure an a given board
   def move(to,board)
     if self.legal?(to,board)
       @coords = to

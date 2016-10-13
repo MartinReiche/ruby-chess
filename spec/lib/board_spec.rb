@@ -3,7 +3,22 @@ require 'chess'
 
 describe Board do
   it { is_expected.to respond_to(:fields) }
-  
+  it { is_expected.to respond_to(:player) }
+
+  describe '.set_player' do
+    before(:all) do
+      @board = Board.new
+      @player1 = Player.new(1)
+      @player2 = Player.new(2)
+    end
+    it "sets the current player" do
+      expect(@board.player).to be nil
+      @board.set_player(@player1)
+      expect(@board.player.id).to eq(1)
+      @board.set_player(@player2)
+      expect(@board.player.id).to eq(2)
+    end
+  end
   describe '.add_figure' do
     before(:all) do
       @board = Board.new
@@ -15,7 +30,6 @@ describe Board do
       expect(@board.fields[0][1].figure).to be nil
     end
   end
-
   describe '.rm_figure' do
     before(:all) do
       @board = Board.new
@@ -28,7 +42,6 @@ describe Board do
       expect(@board.fields[5][2].figure).to be nil
     end
   end
-
   describe '.coords_a' do
     before(:all) { @board = Board.new }
     it "returns an array with coordinate tuples" do
@@ -46,13 +59,22 @@ describe Board do
   describe '.move' do
     before(:all) do
       @board = Board.new
-      @player = Player.new(1)
-      @board.add_figure('b2','pawn',@player)
+      @player1 = Player.new(1)
+      @player2 = Player.new(2)
+      @board.add_figure('b2','pawn',@player1)
     end
-    it "returns false if from field is empty" do
+    it "returns false if origin field is empty" do
       expect(@board.move('c3','e6')).to be false
     end
+    it "returns false if no current player is set" do
+      expect(@board = @board.move('b2','b4')).to be false
+    end
+    it "returns false if current player doesn't owe figure" do
+      @board.set_player(@player2)
+      puts @board.player.inspect
+    end
     it "returns false for an illegal move" do
+      @board.set_player(@player1)
       expect(@board.move('b2','e6')).to be false
     end
     it "returns the updated board for a legal move" do

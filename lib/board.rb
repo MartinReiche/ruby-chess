@@ -1,6 +1,6 @@
 # Add documentaion
 class Board
-  attr_reader :fields
+  attr_reader :fields, :player
   # Initilaize new empty board object tith 8x8 empty fields
   def initialize
     @fields = []
@@ -16,14 +16,19 @@ class Board
     from = to_coords(from)
     to = to_coords(to)
     fig = @fields[from[0]][from[1]].figure
-    if fig.nil?
+    if fig.nil? or @player.nil?
       return false
     else
-      return false unless fig.move(to,self)
+      return false unless fig.legal?(to,self) and fig.player_id == player.id
       @fields[to[0]][to[1]].figure = fig
+      fig.move(to,self)
       self.rm_figure(from)
       return self
     end
+  end
+  # Set the current player
+  def set_player(player)
+    @player = player
   end
   # Add a figure of 'type' to coordinates of 'coords'
   def add_figure(str,type,player)
