@@ -5,6 +5,18 @@ describe Board do
   it { is_expected.to respond_to(:fields) }
   it { is_expected.to respond_to(:player) }
 
+  describe '.check' do
+    it "returns false if none of the Kings is checked"
+    it "returns 1 if the Kings of Player 1 is checked"
+    it "returns 2 if the Kings of Player 2 is checked" 
+  end
+
+  describe '.mate' do
+    it "returns false if none of the Kings is mate"
+    it "returns 1 if the Kings of Player 1 is mate"
+    it "returns 2 if the Kings of Player 2 is mate" 
+  end
+
   describe '.set_player' do
     before(:all) do
       @board = Board.new
@@ -71,7 +83,6 @@ describe Board do
     end
     it "returns false if current player doesn't owe figure" do
       @board.set_player(@player2)
-      puts @board.player.inspect
     end
     it "returns false for an illegal move" do
       @board.set_player(@player1)
