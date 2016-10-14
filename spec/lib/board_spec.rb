@@ -3,7 +3,8 @@ require 'chess'
 
 describe Board do
   it { is_expected.to respond_to(:fields) }
-  it { is_expected.to respond_to(:player) }
+  it { is_expected.to respond_to(:active) }
+  it { is_expected.to respond_to(:passive) }
 
   describe '.check' do
     before(:all) do
@@ -39,11 +40,14 @@ describe Board do
       @player2 = Player.new(2)
     end
     it "sets the current player" do
-      expect(@board.player).to be nil
-      @board.set_player(@player1)
-      expect(@board.player.id).to eq(1)
-      @board.set_player(@player2)
-      expect(@board.player.id).to eq(2)
+      expect(@board.active).to be nil
+      expect(@board.passive).to be nil
+      @board.set_player(@player1.id)
+      expect(@board.active).to eq(1)
+      expect(@board.passive).to eq(2)
+      @board.set_player(@player2.id)
+      expect(@board.active).to eq(2)
+      expect(@board.passive).to eq(1)
     end
   end
   describe '.add_figure' do
@@ -90,10 +94,11 @@ describe Board do
       expect(@board = @board.move('b2','b4')).to be false
     end
     it "returns false if current player doesn't owe figure" do
-      @board.set_player(@player2)
+      @board.set_player(2)
+      expect(@board = @board.move('b2','b4')).to be false
     end
     it "returns false for an illegal move" do
-      @board.set_player(@player1)
+      @board.set_player(1)
       expect(@board.move('b2','e6')).to be false
     end
     it "returns the updated board for a legal move" do

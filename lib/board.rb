@@ -1,6 +1,6 @@
 # Add documentaion
 class Board
-  attr_reader :fields, :active, :passive, :player
+  attr_reader :fields, :active, :passive
   # Initilaize new empty board object tith 8x8 empty fields
   def initialize
     @ids = [1,2]
@@ -24,10 +24,10 @@ class Board
     from = to_coords(from)
     to = to_coords(to)
     fig = @fields[from[0]][from[1]].figure
-    if fig.nil? or @player.nil?
+    if fig.nil? or @active.nil?
       return false
     else
-      return false unless fig.legal?(to,self) and fig.player_id == player.id
+      return false unless fig.legal?(to,self) and fig.player_id == @active
       @fields[to[0]][to[1]].figure = fig
       fig.move(to,self)
       self.rm_figure(from)
@@ -36,7 +36,8 @@ class Board
   end
   # Set the current player
   def set_player(id)
-    @player = player
+    @active = id
+    @active == 1 ? @passive = 2 : @passive = 1
   end
   # Add a figure of 'type' to coordinates of 'coords'
   def add_figure(str,type,player)
@@ -85,10 +86,6 @@ class Board
       end
     end
     return player_figs
-  end
-  def get_king(id)
-    figs = get_figs(id)
-    figs.each 
   end
   def to_coords(str)
     str = str.downcase.strip.chars
