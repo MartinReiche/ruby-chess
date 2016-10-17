@@ -23,6 +23,7 @@ class Board
       figs.each do |f|
         @checked << king[0].player_id if f.legal?(king[0].coords,self)
       end
+      @checked.uniq!
       @checked.sort!
     end
   end
@@ -33,16 +34,14 @@ class Board
     unless @checked.nil?
       @checked.each do |id|
         enemy = (id == 1) ? 2 : 1
-        figs = get_figs(id)
-        king = get_figs(enemy,King)
+        king = get_figs(id,King)
+        figs = get_figs(enemy)
         moves = king[0].legal
+        esc = Array.new(moves.length)
         figs.each do |f|
-          moves.each do |m|
-
-            puts f.legal?(m,self)
-            player_mate = id if f.legal?(m,self)
-          end
+          moves.each_with_index { |m,i| esc[i] = true if f.legal?(m,self) }
         end
+        player_mate = id if esc.all?
       end
     end
     return player_mate

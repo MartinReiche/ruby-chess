@@ -44,10 +44,10 @@ describe Board do
       @board.add_figure('h8','king',@player2)
     end
     it "is nil if none of the Kings is mate" do
+      @board.add_figure('e5','queen',@player2)
       expect(@board.mate).to be nil
     end
     it "returns 1 if the Kings of Player 1 is mate" do
-      @board.add_figure('e5','queen',@player2)
       @board.add_figure('a6','rook',@player2)
       @board.add_figure('f1','rook',@player2)
       expect(@board.mate).to eq(1)
