@@ -1,6 +1,6 @@
 # Add documentaion
 class Board
-  attr_reader :fields, :active, :passive
+  attr_reader :fields, :active, :passive, :checked
   # Initilaize new empty board object tith 8x8 empty fields
   def initialize
     @ids = [1,2]
@@ -14,17 +14,38 @@ class Board
   end
   # Check whether any king is checked
   def check
-    checked = []
+    @checked = []
     2.times do |p|
       p += 1
       enemy = (p == 1) ? 2 : 1
       figs = get_figs(p)
       king = get_figs(enemy,King)
       figs.each do |f|
-        checked << king[0].player_id if f.legal?(king[0].coords,self)
+        @checked << king[0].player_id if f.legal?(king[0].coords,self)
+      end
+      @checked.sort!
+    end
+  end
+  # Check whether any king is mate
+  def mate
+    player_mate = nil
+    self.check
+    unless @checked.nil?
+      @checked.each do |id|
+        enemy = (id == 1) ? 2 : 1
+        figs = get_figs(id)
+        king = get_figs(enemy,King)
+        moves = king[0].legal
+        figs.each do |f|
+          moves.each do |m|
+
+            puts f.legal?(m,self)
+            player_mate = id if f.legal?(m,self)
+          end
+        end
       end
     end
-    checked.empty? ? false : checked.sort
+    return player_mate
   end
   # Move a figure from one coordinate to the other
   def move(from,to)

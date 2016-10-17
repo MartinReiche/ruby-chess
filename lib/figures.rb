@@ -86,7 +86,6 @@ end
 
 # Class for figure of King
 class King < Queen
-  private
   def legal
     qbr_legal(true)
   end

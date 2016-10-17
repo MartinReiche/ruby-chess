@@ -5,6 +5,7 @@ describe Board do
   it { is_expected.to respond_to(:fields) }
   it { is_expected.to respond_to(:active) }
   it { is_expected.to respond_to(:passive) }
+  it { is_expected.to respond_to(:checked) }
 
   describe '.check' do
     before(:all) do
@@ -14,27 +15,52 @@ describe Board do
       @board.add_figure('c3','king',@player1)
       @board.add_figure('a7','king',@player2)
     end
-    it "returns false if none of the Kings is checked" do
-      expect(@board.check).to be false
+    it "returns empty if none of the Kings is checked" do
+      @board.check
+      expect(@board.checked).to be_empty
     end
     it "returns 1 if the King of Player 1 is checked" do
       @board.add_figure('c7','queen',@player2)
-      expect(@board.check).to eq([1])
+      @board.check
+      expect(@board.checked).to eq([1])
     end
     it "returns 1 and 2 if both Kings are checked"  do
       @board.add_figure('b5','knight',@player1)
-      expect(@board.check).to eq([1,2])
+      @board.check
+      expect(@board.checked).to eq([1,2])
     end
     it "returns 2 if the Kings of Player 2 is checked"  do
       @board.rm_figure([6,2])
-      expect(@board.check).to eq([2])
+      @board.check
+      expect(@board.checked).to eq([2])
     end
   end
-
   describe '.mate' do
-    it "returns false if none of the Kings is mate"
-    it "returns 1 if the Kings of Player 1 is mate"
-    it "returns 2 if the Kings of Player 2 is mate" 
+    before(:all) do
+      @board = Board.new
+      @player1 = Player.new(1)
+      @player2 = Player.new(2)
+      @board.add_figure('a1','king',@player1)
+      @board.add_figure('h8','king',@player2)
+    end
+    it "is nil if none of the Kings is mate" do
+      expect(@board.mate).to be nil
+    end
+    it "returns 1 if the Kings of Player 1 is mate" do
+      @board.add_figure('e5','queen',@player2)
+      @board.add_figure('a6','rook',@player2)
+      @board.add_figure('f1','rook',@player2)
+      expect(@board.mate).to eq(1)
+    end
+    it "returns 2 if the Kings of Player 2 is mate" do
+      @board.rm_figure([0,5])
+      @board.rm_figure([4,4])
+      @board.rm_figure([7,0])
+      @board.add_figure('h1','rook',@player1)
+      @board.add_figure('a8','rook',@player1)
+      @board.add_figure('f6','bishop',@player1)
+      expect(@board.mate).to eq(2)
+    end
   end
 
   describe '.set_player' do
