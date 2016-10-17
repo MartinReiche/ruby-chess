@@ -17,13 +17,17 @@ describe Board do
     it "returns false if none of the Kings is checked" do
       expect(@board.check).to be false
     end
-    it "returns 1 if the Kings of Player 1 is checked" do
+    it "returns 1 if the King of Player 1 is checked" do
       @board.add_figure('c7','queen',@player2)
-      expect(@board.check).to eq(1)
+      expect(@board.check).to eq([1])
+    end
+    it "returns 1 and 2 if both Kings are checked"  do
+      @board.add_figure('b5','knight',@player1)
+      expect(@board.check).to eq([1,2])
     end
     it "returns 2 if the Kings of Player 2 is checked"  do
-      @board.add_figure('b5','knight',@player1)
-      expect(@board.check).to eq(2)
+      @board.rm_figure([6,2])
+      expect(@board.check).to eq([2])
     end
   end
 

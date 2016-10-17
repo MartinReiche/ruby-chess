@@ -14,10 +14,17 @@ class Board
   end
   # Check whether any king is checked
   def check
-    2.times do |player|
-      figs = get_figs(player)
-      # enemy_king = get_king(
+    checked = []
+    2.times do |p|
+      p += 1
+      enemy = (p == 1) ? 2 : 1
+      figs = get_figs(p)
+      king = get_figs(enemy,King)
+      figs.each do |f|
+        checked << king[0].player_id if f.legal?(king[0].coords,self)
+      end
     end
+    checked.empty? ? false : checked.sort
   end
   # Move a figure from one coordinate to the other
   def move(from,to)
@@ -71,7 +78,7 @@ class Board
   end
 
   private
-  def get_figs(id)
+  def get_figs(id,figure=nil)
     figs = figures_a
     player_figs = []
     figs.each do |row|
