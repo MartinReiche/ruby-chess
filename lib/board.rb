@@ -14,14 +14,23 @@ class Board
   end
   # display the current board
   def display
-    @fields.each do |row|
-      row.each do |f|
-        print f.figure.class unless f.figure.nil?
-        print "nil" if f.figure.nil?
+    @fields.each_with_index do |row,i|
+      print (i.modulo(2) == 0) ? (white+black)*4 :(black+white)*4
+      print "\n"
+      row.each_with_index do |f,j|
+        s = f.figure.nil? ? " " : f.figure.sign
+        if i.modulo(2) == 0
+          print white(s) if j.modulo(2) == 0
+          print black(s) if j.modulo(2) == 1
+        else
+          print black(s) if j.modulo(2) == 0
+          print white(s) if j.modulo(2) == 1
+        end
       end
-      print "\n" 
+      print "\n"
+      print (i.modulo(2) == 0) ? (white+black)*4 :(black+white)*4
+      print "\n"
     end
-    
   end
   # Check whether any king is checked
   def check
@@ -109,6 +118,24 @@ class Board
   end
 
   private
+  def black(s=" ")
+    if s == " "
+      "\e[40m#{" "}\e[0m"*3
+    elsif s == ""
+      "\e[40m#{" "}\e[0m"
+    else
+      return "#{black("")}#{s}#{black("")}"
+    end
+  end
+  def white(s=" ")
+    if s == " "
+      return "\e[47m#{" "}\e[0m"*3
+    elsif s == ""
+      return "\e[47m#{" "}\e[0m"
+    else
+      return "#{white("")}#{s}#{white("")}"
+    end
+  end
   def get_figs(id,figure=nil)
     figs = figures_a
     player_figs = []
@@ -155,3 +182,4 @@ class Field
   #Errors
   @@arg_err = Proc.new { raise ArgumentError.new("Argument must be an object of the Node class") }
 end
+
