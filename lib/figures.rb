@@ -1,6 +1,6 @@
 # Parent class for chess figure
 class Figure
-  attr_reader :name, :player_id, :coords, :color, :moved
+  attr_reader :name, :player_id, :coords, :color, :sign, :moved
   # Assign fure unspecific attributes upon initilization 
   def get_attr(player,coords)
     @player_id = player.id
@@ -52,8 +52,15 @@ end
 class Pawn < Figure
   def initialize(player,coords)
     self.get_attr(player,coords)
-    @translate, @attack = [[1,0],[2,0]], [[1,1],[1,-1]] if @color == "white"
-    @translate, @attack = [[-1,0],[-2,0]], [[-1,1],[-1,-1]] if @color == "black"
+    if @color == "white"
+      @sign = "\u2659"
+      @translate = [[1,0],[2,0]]
+      @attack = [[1,1],[1,-1]]
+    else
+      @sign = "\u265F"
+      @translate = [[-1,0],[-2,0]]
+      @attack = [[-1,1],[-1,-1]]
+    end
   end
   private
   def legal
@@ -77,6 +84,7 @@ class Queen < Figure
   def initialize(player,coords)
     self.get_attr(player,coords)
     @translate = [[1,0],[1,1],[0,1],[-1,1],[-1,0],[-1,-1],[0,-1],[1,-1]]
+    @sign = (@color == "white") ? "\u2655" : "\u265B"
   end
   private
   def legal
@@ -85,7 +93,13 @@ class Queen < Figure
 end
 
 # Class for figure of King
-class King < Queen
+class King < Figure
+  # Initialize a new King for given player at given coords 
+  def initialize(player,coords)
+    self.get_attr(player,coords)
+    @translate = [[1,0],[1,1],[0,1],[-1,1],[-1,0],[-1,-1],[0,-1],[1,-1]]
+    @sign = (@color == "white") ? "\u2654" : "\u265A"
+  end
   def legal
     qbr_legal(true)
   end
@@ -97,6 +111,7 @@ class Bishop < Figure
   def initialize(player,coords)
     self.get_attr(player,coords)
     @translate = [[1,1],[-1,1],[-1,-1],[1,-1]]
+    @sign = (@color == "white") ? "\u2657" : "\u265D"
   end
   private
   def legal
@@ -111,6 +126,7 @@ class Rook < Figure
   def initialize(player,coords)
     self.get_attr(player,coords)
     @translate = [[1,0],[-1,0],[0,1],[0,-1]]
+    @sign = (@color == "white") ? "\u2656" : "\u265C"
   end
   private
   def legal
@@ -124,6 +140,7 @@ class Knight < Figure
   def initialize(player,coords)
     self.get_attr(player,coords)
     @translate = { 2 => [1,-1], -2 => [1,-1], 1 => [2, -2], -1 => [2,-2] }
+    @sign = (@color == "white") ? "\u2658" : "\u265E"
   end
   private
   def legal

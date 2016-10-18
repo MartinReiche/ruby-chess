@@ -8,6 +8,7 @@ describe Figure do
   it { is_expected.to respond_to(:player_id) }
   it { is_expected.to respond_to(:coords) }
   it { is_expected.to respond_to(:color) }
+  it { is_expected.to respond_to(:sign) }
   it { is_expected.to respond_to(:moved) }
 
   describe '.move' do
@@ -50,6 +51,12 @@ describe Pawn do
     end
     it "is marked as unmoved" do
       expect(@white.moved).to be false
+    end
+    it "has a white Pawn for Player 1" do
+      expect(@white.sign).to eq("\u2659")
+    end
+    it "has a black Pawn for Player 2" do
+      expect(@black.sign).to eq("\u265F")
     end
   end
   describe '.legal?' do
@@ -112,7 +119,22 @@ end
 
 describe King do
   it "inherits from Figure" do
-    expect(King).to be < Queen
+    expect(King).to be < Figure
+  end
+  describe '.new' do
+    before(:all) do
+      @board = Board.new
+      @p1 = Player.new(1)
+      @p2 = Player.new(2)
+      @white = King.new(@p1,[3,4])
+      @black = King.new(@p2,[3,6])
+    end
+    it "has a white King for Player 1" do
+      expect(@white.sign).to eq("\u2654")
+    end
+    it "has a black King for Player 2" do
+      expect(@black.sign).to eq("\u265A")
+    end
   end
   describe '.legal?' do
     before(:all) do
@@ -154,6 +176,22 @@ describe Bishop do
   it "inherits from Figure" do
     expect(Bishop).to be < Figure
   end
+  describe '.new' do
+    before(:all) do
+      @board = Board.new
+      @p1 = Player.new(1)
+      @p2 = Player.new(2)
+      @white = Bishop.new(@p1,[3,4])
+      @black = Bishop.new(@p2,[3,6])
+    end
+    it "has a white Bishop for Player 1" do
+      expect(@white.sign).to eq("\u2657")
+    end
+    it "has a black Bishop for Player 2" do
+      expect(@black.sign).to eq("\u265D")
+    end
+  end
+
   describe '.legal?' do
     before(:all) do
       @player1 = Player.new(1)
@@ -194,6 +232,21 @@ describe Rook do
   it "inherits from Figure" do
     expect(Rook).to be < Figure
   end
+  describe '.new' do
+    before(:all) do
+      @board = Board.new
+      @p1 = Player.new(1)
+      @p2 = Player.new(2)
+      @white = Rook.new(@p1,[3,4])
+      @black = Rook.new(@p2,[3,6])
+    end
+    it "has a white Rook for Player 1" do
+      expect(@white.sign).to eq("\u2656")
+    end
+    it "has a black Rook for Player 2" do
+      expect(@black.sign).to eq("\u265C")
+    end
+  end
   describe '.legal?' do
     before(:all) do
       @player1 = Player.new(1)
@@ -232,6 +285,21 @@ end
 describe Queen do
   it "inherits from Figure" do
     expect(Queen).to be < Figure
+  end
+  describe '.new' do
+    before(:all) do
+      @board = Board.new
+      @p1 = Player.new(1)
+      @p2 = Player.new(2)
+      @white = Queen.new(@p1,[3,4])
+      @black = Queen.new(@p2,[3,6])
+    end
+    it "has a white Queen for Player 1" do
+      expect(@white.sign).to eq("\u2655")
+    end
+    it "has a black Queen for Player 2" do
+      expect(@black.sign).to eq("\u265B")
+    end
   end
   describe '.legal?' do
     before(:all) do
@@ -276,17 +344,25 @@ describe Knight do
   end
   describe '.new' do
     before(:all) do
-      @player = Player.new(1)
-      @knight = Knight.new(@player,[4,4])
+      @p1 = Player.new(1)
+      @p2 = Player.new(2)
+      @white = Knight.new(@p1,[4,4])
+      @black = Knight.new(@p2,[1,6])
+    end
+    it "has a white Knight for Player 1" do
+      expect(@white.sign).to eq("\u2658")
+    end
+    it "has a black Knight for Player 2" do
+      expect(@black.sign).to eq("\u265E")
     end
     it "has a player id" do
-      expect(@knight.player_id).to eq(@player.id)
+      expect(@white.player_id).to eq(@p1.id)
     end
     it "has coordinates" do
-      expect(@knight.coords).to eq([4,4])
+      expect(@white.coords).to eq([4,4])
     end
     it "has the color of the player" do
-      expect(@knight.color).to eq(@player.color)
+      expect(@white.color).to eq(@p1.color)
     end
   end
   describe '.legal?' do

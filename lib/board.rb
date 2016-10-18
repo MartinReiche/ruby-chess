@@ -12,6 +12,17 @@ class Board
       end
     end
   end
+  # display the current board
+  def display
+    @fields.each do |row|
+      row.each do |f|
+        print f.figure.class unless f.figure.nil?
+        print "nil" if f.figure.nil?
+      end
+      print "\n" 
+    end
+    
+  end
   # Check whether any king is checked
   def check
     @checked = []
