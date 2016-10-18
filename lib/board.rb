@@ -14,9 +14,10 @@ class Board
   end
   # display the current board
   def display
+    print "\n"
     @fields.each_with_index do |row,i|
-      print (i.modulo(2) == 0) ? (white+black)*4 :(black+white)*4
-      print "\n"
+      # print (i.modulo(2) == 0) ? (white+black)*4 :(black+white)*4
+      # print "\n"
       row.each_with_index do |f,j|
         s = f.figure.nil? ? " " : f.figure.sign
         if i.modulo(2) == 0
@@ -28,9 +29,10 @@ class Board
         end
       end
       print "\n"
-      print (i.modulo(2) == 0) ? (white+black)*4 :(black+white)*4
-      print "\n"
+      # print (i.modulo(2) == 0) ? (white+black)*4 :(black+white)*4
+      # print "\n"
     end
+    print "\n"
   end
   # Check whether any king is checked
   def check
@@ -120,21 +122,17 @@ class Board
   private
   def black(s=" ")
     if s == " "
-      "\e[40m#{" "}\e[0m"*3
+      "\e[41m#{" "}\e[0m"*3
     elsif s == ""
-      "\e[40m#{" "}\e[0m"
+      "\e[41m#{" "}\e[0m"
     else
       return "#{black("")}#{s}#{black("")}"
     end
   end
   def white(s=" ")
-    if s == " "
-      return "\e[47m#{" "}\e[0m"*3
-    elsif s == ""
-      return "\e[47m#{" "}\e[0m"
-    else
-      return "#{white("")}#{s}#{white("")}"
-    end
+    empt = "\e[46m#{" "}\e[0m"
+    sign = empt+"\e[46m#{s}\e[0m"+empt
+    s == " " ? empt*3 : sign
   end
   def get_figs(id,figure=nil)
     figs = figures_a
