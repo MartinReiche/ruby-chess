@@ -19,7 +19,7 @@ class Board
       # print (i.modulo(2) == 0) ? (white+black)*4 :(black+white)*4
       # print "\n"
       row.each_with_index do |f,j|
-        s = f.figure.nil? ? " " : f.figure.sign
+        s = f.figure.nil? ? " " : inverse_color(f.figure.sign)
         if i.modulo(2) == 0
           print white(s) if j.modulo(2) == 0
           print black(s) if j.modulo(2) == 1
@@ -120,18 +120,17 @@ class Board
   end
 
   private
+  def inverse_color(s)
+    "\e[30m#{s}\e[0m"
+  end
   def black(s=" ")
-    if s == " "
-      "\e[41m#{" "}\e[0m"*3
-    elsif s == ""
-      "\e[41m#{" "}\e[0m"
-    else
-      return "#{black("")}#{s}#{black("")}"
-    end
+    empt = "\e[41m#{" "}\e[0m"
+    sign = empt+"\e[41m#{s}\e[0m"+empt
+    s == " " ? empt*3 : sign
   end
   def white(s=" ")
-    empt = "\e[46m#{" "}\e[0m"
-    sign = empt+"\e[46m#{s}\e[0m"+empt
+    empt = "\e[47m#{" "}\e[0m"
+    sign = empt+ "\e[47m#{s}\e[0m" +empt
     s == " " ? empt*3 : sign
   end
   def get_figs(id,figure=nil)
