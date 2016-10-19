@@ -14,12 +14,18 @@ class Board
   end
   # display the current board
   def display
+    nums = []
+    8.downto(1).each {|n| nums.push n}
     print "\n"
     @fields.each_with_index do |row,i|
-      # print (i.modulo(2) == 0) ? (white+black)*4 :(black+white)*4
-      # print "\n"
+      if i == 0
+        print "   " + black(" ")
+        "a".upto("h").each { |l| print brown(black_f(l)) }
+        print black(" ") + "\n"
+      end
       row.each_with_index do |f,j|
-        s = f.figure.nil? ? " " : inverse_color(f.figure.sign)
+        print "   " + brown(black_f(nums[i].to_s)) if j == 0
+        s = f.figure.nil? ? " " : black_f(f.figure.sign)
         if i.modulo(2) == 0
           print white(s) if j.modulo(2) == 0
           print black(s) if j.modulo(2) == 1
@@ -27,12 +33,13 @@ class Board
           print black(s) if j.modulo(2) == 0
           print white(s) if j.modulo(2) == 1
         end
+        print brown(black_f(nums[i].to_s)) if j == 7
       end
       print "\n"
-      # print (i.modulo(2) == 0) ? (white+black)*4 :(black+white)*4
-      # print "\n"
     end
-    print "\n"
+    print "   " + black(" ")
+    "a".upto("h").each { |l| print brown(black_f(l)) }
+    print black(" ") + "\n\n"
   end
   # Check whether any king is checked
   def check
@@ -120,7 +127,12 @@ class Board
   end
 
   private
-  def inverse_color(s)
+  def brown(s)
+    empt = "\e[43m#{" "}\e[0m"
+    sign = empt+"\e[43m#{s}\e[0m"+empt
+    s == " " ? empt*3 : sign
+  end
+  def black_f(s)
     "\e[30m#{s}\e[0m"
   end
   def black(s=" ")
