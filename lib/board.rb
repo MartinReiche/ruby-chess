@@ -3,6 +3,7 @@ class Board
   attr_reader :fields, :active, :passive, :checked
   # Initilaize new empty board object tith 8x8 empty fields
   def initialize
+    @captured = []
     @ids = [1,2]
     @fields = []
     8.times.each do |row|
@@ -15,7 +16,7 @@ class Board
   # display the current board
   def display
     nums = []
-    8.downto(1).each {|n| nums.push n}
+    1.upto(8).each {|n| nums.push n}
     print "\n"
     @fields.each_with_index do |row,i|
       if i == 0
@@ -27,11 +28,11 @@ class Board
         print "   " + brown(black_f(nums[i].to_s)) if j == 0
         s = f.figure.nil? ? " " : black_f(f.figure.sign)
         if i.modulo(2) == 0
-          print white(s) if j.modulo(2) == 0
-          print black(s) if j.modulo(2) == 1
-        else
-          print black(s) if j.modulo(2) == 0
           print white(s) if j.modulo(2) == 1
+          print black(s) if j.modulo(2) == 0
+        else
+          print black(s) if j.modulo(2) == 1
+          print white(s) if j.modulo(2) == 0
         end
         print brown(black_f(nums[i].to_s)) if j == 7
       end
