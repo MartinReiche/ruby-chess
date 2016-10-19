@@ -12,20 +12,20 @@ describe Board do
       @board = Board.new
       @player1 = Player.new(1)
       @player2 = Player.new(2)
-      @board.add_figure('c3','king',@player1)
-      @board.add_figure('a7','king',@player2)
+      @board.add_figure('c6','king',@player1)
+      @board.add_figure('a2','king',@player2)
     end
     it "returns empty if none of the Kings is checked" do
       @board.check
       expect(@board.checked).to be_empty
     end
     it "returns 1 if the King of Player 1 is checked" do
-      @board.add_figure('c7','queen',@player2)
+      @board.add_figure('c2','queen',@player2)
       @board.check
       expect(@board.checked).to eq([1])
     end
     it "returns 1 and 2 if both Kings are checked"  do
-      @board.add_figure('b5','knight',@player1)
+      @board.add_figure('b4','knight',@player1)
       @board.check
       expect(@board.checked).to eq([1,2])
     end
@@ -40,25 +40,25 @@ describe Board do
       @board = Board.new
       @player1 = Player.new(1)
       @player2 = Player.new(2)
-      @board.add_figure('a1','king',@player1)
-      @board.add_figure('h8','king',@player2)
+      @board.add_figure('a8','king',@player1)
+      @board.add_figure('h1','king',@player2)
     end
     it "is nil if none of the Kings is mate" do
-      @board.add_figure('e5','queen',@player2)
+      @board.add_figure('e4','queen',@player2)
       expect(@board.mate).to be nil
     end
     it "returns 1 if the Kings of Player 1 is mate" do
-      @board.add_figure('a6','rook',@player2)
-      @board.add_figure('f1','rook',@player2)
+      @board.add_figure('a3','rook',@player2)
+      @board.add_figure('f8','rook',@player2)
       expect(@board.mate).to eq(1)
     end
     it "returns 2 if the Kings of Player 2 is mate" do
       @board.rm_figure([0,5])
       @board.rm_figure([4,4])
       @board.rm_figure([7,0])
-      @board.add_figure('h1','rook',@player1)
-      @board.add_figure('a8','rook',@player1)
-      @board.add_figure('f6','bishop',@player1)
+      @board.add_figure('h8','rook',@player1)
+      @board.add_figure('a1','rook',@player1)
+      @board.add_figure('f3','bishop',@player1)
       expect(@board.mate).to eq(2)
     end
   end
@@ -84,7 +84,7 @@ describe Board do
     before(:all) do
       @board = Board.new
       @player = Player.new(1)
-      @board.add_figure('a1','Knight',@player)
+      @board.add_figure('a8','Knight',@player)
     end
     it "correctly initializes a knight" do
       expect(@board.fields[0][0].figure.class).to eq(Knight)
@@ -95,7 +95,7 @@ describe Board do
     before(:all) do
       @board = Board.new
       @player = Player.new(1)
-      @board.add_figure('c6','Knight',@player)
+      @board.add_figure('c3','Knight',@player)
     end
     it "correctly removes a figure from the board" do
       expect(@board.fields[5][2].figure.class).to eq(Knight)
@@ -115,26 +115,26 @@ describe Board do
       @board = Board.new
       @player1 = Player.new(1)
       @player2 = Player.new(2)
-      @board.add_figure('b2','pawn',@player1)
+      @board.add_figure('b7','pawn',@player1)
     end
     it "returns false if origin field is empty" do
-      expect(@board.move('c3','e6')).to be false
+      expect(@board.move('c6','e3')).to be false
     end
     it "returns false if no current player is set" do
-      expect(@board = @board.move('b2','b4')).to be false
+      expect(@board = @board.move('b7','b5')).to be false
     end
     it "returns false if current player doesn't owe figure" do
       @board.set_player(2)
-      expect(@board = @board.move('b2','b4')).to be false
+      expect(@board = @board.move('b7','b5')).to be false
     end
     it "returns false for an illegal move" do
       @board.set_player(1)
-      expect(@board.move('b2','e6')).to be false
+      expect(@board.move('b7','e3')).to be false
     end
     it "returns the updated board for a legal move" do
       expect(@board.fields[1][1].figure).to be_a(Pawn)
       expect(@board.fields[3][1].figure).to be nil
-      @board = @board.move('b2','b4')
+      @board = @board.move('b7','b5')
       expect(@board.fields[1][1].figure).to be nil
       expect(@board.fields[3][1].figure).to be_a(Pawn)
     end

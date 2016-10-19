@@ -64,9 +64,9 @@ describe Pawn do
       @player1 = Player.new(1)
       @player2 = Player.new(2)
       @board = Board.new
-      @board.add_figure('e3','knight',@player2)
-      @board.add_figure('b6','knight',@player1)
-      @board.add_figure('f3','knight',@player1)
+      @board.add_figure('e6','knight',@player2)
+      @board.add_figure('b3','knight',@player1)
+      @board.add_figure('f6','knight',@player1)
       @white = Pawn.new(@player1,[1,4])
       @black = Pawn.new(@player2,[6,2])
     end
@@ -141,8 +141,8 @@ describe King do
       @player1 = Player.new(1)
       @player2 = Player.new(2)
       @board = Board.new
-      @board.add_figure('e3','queen',@player1)
-      @board.add_figure('d4','knight',@player2)
+      @board.add_figure('e6','queen',@player1)
+      @board.add_figure('d5','knight',@player2)
       @king = King.new(@player1,[3,4])
     end
     it "returns true for a legal diagonal move" do
@@ -197,9 +197,9 @@ describe Bishop do
       @player1 = Player.new(1)
       @player2 = Player.new(2)
       @board = Board.new
-      @board.add_figure('f2','queen',@player1)
-      @board.add_figure('a4','knight',@player2)
-      @board.add_figure('d7','bishop',@player2)
+      @board.add_figure('f7','queen',@player1)
+      @board.add_figure('a5','knight',@player2)
+      @board.add_figure('d2','bishop',@player2)
       @bishop = Bishop.new(@player1,[4,1])
     end
     it "returns true for a legal diagonal move" do
@@ -252,8 +252,8 @@ describe Rook do
       @player1 = Player.new(1)
       @player2 = Player.new(2)
       @board = Board.new
-      @board.add_figure('d3','queen',@player1)
-      @board.add_figure('f8','knight',@player2)
+      @board.add_figure('d6','queen',@player1)
+      @board.add_figure('f1','knight',@player2)
       @rook = Rook.new(@player1,[7,3])
     end
     it "returns true for a legal horizontal move" do
@@ -306,9 +306,9 @@ describe Queen do
       @player1 = Player.new(1)
       @player2 = Player.new(2)
       @board = Board.new
-      @board.add_figure('e2','queen',@player1)
-      @board.add_figure('f4','knight',@player1)
-      @board.add_figure('g5','knight',@player2)
+      @board.add_figure('e7','queen',@player1)
+      @board.add_figure('f5','knight',@player1)
+      @board.add_figure('g4','knight',@player2)
       @queen = Queen.new(@player1,[4,4])
     end
     it "returns true for a legal horizontal move" do
@@ -370,8 +370,8 @@ describe Knight do
       @player1 = Player.new(1)
       @player2 = Player.new(2)
       @board = Board.new
-      @board.add_figure('c6','queen',@player1)
-      @board.add_figure('d7','knight',@player2)
+      @board.add_figure('c3','queen',@player1)
+      @board.add_figure('d2','knight',@player2)
       @knight = Knight.new(@player1,[4,4])
     end
     it "returns true for legal move" do

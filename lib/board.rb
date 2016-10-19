@@ -16,7 +16,7 @@ class Board
   # display the current board
   def display
     nums = []
-    1.upto(8).each {|n| nums.push n}
+    8.downto(1).each {|n| nums.push n}
     print "\n"
     @fields.each_with_index do |row,i|
       if i == 0
@@ -28,11 +28,11 @@ class Board
         print "   " + brown(black_f(nums[i].to_s)) if j == 0
         s = f.figure.nil? ? " " : black_f(f.figure.sign)
         if i.modulo(2) == 0
-          print white(s) if j.modulo(2) == 1
-          print black(s) if j.modulo(2) == 0
-        else
-          print black(s) if j.modulo(2) == 1
           print white(s) if j.modulo(2) == 0
+          print black(s) if j.modulo(2) == 1
+        else
+          print black(s) if j.modulo(2) == 0
+          print white(s) if j.modulo(2) == 1
         end
         print brown(black_f(nums[i].to_s)) if j == 7
       end
@@ -109,7 +109,7 @@ class Board
     else
       return 'Wrong figure type'
     end
-    self.fields[coords[0]][coords[1]].figure = figure
+    @fields[coords[0]][coords[1]].figure = figure
   end
   # Remove figure on given 'coords' 
   def rm_figure(coords)
@@ -146,6 +146,11 @@ class Board
     sign = empt+ "\e[47m#{s}\e[0m" +empt
     s == " " ? empt*3 : sign
   end
+  def reverse(n)
+    rev = []
+    7.downto(0).each { |i| rev.push i }
+    rev[n]
+  end
   def get_figs(id,figure=nil)
     figs = figures_a
     player_figs = []
@@ -168,7 +173,7 @@ class Board
     if str.length == 2
       str.each do |c|
         if (c =~ /\A\d+\z/ ? true : false)
-          coords[0] = (c.to_i-1)
+          coords[0] = reverse(c.to_i-1)
         else
           coords[1] = ("a".."z").find_index(c) 
         end
