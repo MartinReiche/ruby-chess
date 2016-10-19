@@ -13,5 +13,8 @@ class Player
     @color = @@colors[@id-1]
     name.empty? ? (@name = "Player #{@id}") : (@name = name)
   end
+  def name=(name)
+    @name = name
+  end
 end
 

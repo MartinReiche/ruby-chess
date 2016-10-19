@@ -149,7 +149,7 @@ class Board
   def reverse(n)
     rev = []
     7.downto(0).each { |i| rev.push i }
-    rev[n]
+    return rev[n]
   end
   def get_figs(id,figure=nil)
     figs = figures_a

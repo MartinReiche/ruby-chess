@@ -18,6 +18,14 @@ describe Player do
   it "has a color" do
     expect(@player.color).to eq('white')
   end
-  
+
+  describe '.name='do
+    before(:all) { @player = Player.new(1) }
+    it "changes the name of the player" do
+      expect(@player.name).to eq("Player 1")
+      @player.name = "John"
+      expect(@player.name).to eq("John")
+    end
+  end
 end
 
