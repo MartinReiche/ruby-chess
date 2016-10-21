@@ -1,3 +1,4 @@
+# coding: utf-8
 # Add documentaion
 class Board
   attr_reader :fields, :active, :passive, :checked
@@ -20,9 +21,9 @@ class Board
     print "\n"
     @fields.each_with_index do |row,i|
       if i == 0
-        print "   " + black(" ")
+        print "   " + black("†")
         "a".upto("h").each { |l| print brown(black_f(l)) }
-        print black(" ") + "\n"
+        print black("⚖") + "\n"
       end
       row.each_with_index do |f,j|
         print "   " + brown(black_f(nums[i].to_s)) if j == 0
@@ -38,9 +39,9 @@ class Board
       end
       print "\n"
     end
-    print "   " + black(" ")
+    print "   " + black("⚜")
     "a".upto("h").each { |l| print brown(black_f(l)) }
-    print black(" ") + "\n\n"
+    print black("⚔") + "\n\n"
   end
   # Check whether any king is checked
   def check
