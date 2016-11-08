@@ -11,18 +11,51 @@ class Game
     @msg = "Test message"
     @active = 0
   end
-
-  def draw
+  def turn
+    @msg = "Choose a figure."
+    draw_board()
+    choose()
+  end
+  private
+  def switch_player
+    @active == 0 ? @active = 1 : @active = 0
+  end
+  def draw_board
     clear_screen(15) if @drawn
     print "\n   #{@msg}\n"
     @board.display
-    print "   #{@players[@active].name} >> "
-    print "\n" + ("\e[A\e[K") + ("   #{@players[@active].name} >> ") unless @drawn
-    @msg = valid?(gets.chomp)
+    # choose()
     @drawn = true
   end
-  
-  private
+  def choose
+    status = ask_from
+    until status
+      @drawn = true
+      @msg = "Invalid move!"
+      draw_board()
+      status = ask_from
+    end
+    @msg = "Choose destination."
+    draw_board()
+    status = ask_to
+    until status
+      @drawn = true
+      @msg = "Invalid move!"
+      draw_board()
+      status = ask_to
+    end
+    @drawn = true
+  end
+  def ask_from
+    print "\n" + ("\e[A\e[K") + ("   #{@players[@active].name}, from >> ") 
+    @from = gets.chomp
+    return valid?(@from)
+  end
+  def ask_to
+    print "\n" + ("\e[A\e[K") + ("   #{@players[@active].name}, to >> ") 
+    @to = gets.chomp
+    return valid?(@to)
+  end
   def valid?(str)
     str = str.downcase.strip.chars
     coords = []
@@ -44,28 +77,29 @@ class Game
     (r and c) ? true : false
   end
 
-  end
-  def reset_board
-    init_figures
-  end
-  def clear_screen(lines)
-    print "\r" + ("\e[A") * lines + "\e[J"
-    @drawn = false
-  end
-  def init_figures
-    fig_seq = ['rook','knight','bishop','queen','king','bishop','knight','rook']
-    rows = [[1,2],[7,8]]
-    @players.each_with_index do |p,i|
-      rows[i].each do |n|
-        "a".upto("h").each_with_index do |c,j|
-          if [1,8].include?(n)
-            @board.add_figure("#{c}#{n.to_s}","#{fig_seq[j]}",p)
-          else
-            @board.add_figure("#{c}#{n.to_s}","pawn",p)
-          end
+end
+
+def reset_board
+  init_figures
+end
+def clear_screen(lines)
+  print "\r" + ("\e[A") * lines + "\e[J"
+  @drawn = false
+end
+def init_figures
+  fig_seq = ['rook','knight','bishop','queen','king','bishop','knight','rook']
+  rows = [[1,2],[7,8]]
+  @players.each_with_index do |p,i|
+    rows[i].each do |n|
+      "a".upto("h").each_with_index do |c,j|
+        if [1,8].include?(n)
+          @board.add_figure("#{c}#{n.to_s}","#{fig_seq[j]}",p)
+        else
+          @board.add_figure("#{c}#{n.to_s}","pawn",p)
         end
       end
     end
   end
+end
 
 

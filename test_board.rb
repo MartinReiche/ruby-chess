@@ -4,5 +4,5 @@ game = Game.new
 
 # puts knight.inspect
 while true
-  game.draw
+  game.turn
 end
