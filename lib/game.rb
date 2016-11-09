@@ -29,12 +29,13 @@ class Game
   end
   def choose
     status = ask_from
-    is_own = @board.is_own_figure?(@from,@active)
+    status ? (is_own = @board.is_own_figure?(@from,@active)) : is_own = false
     until status and is_own
       @drawn = true
       @msg = "Invalid!"
       draw_board()
       status = ask_from
+      status ? (is_own = @board.is_own_figure?(@from,@active)) : is_own = false
     end
     @msg = "Choose destination."
     draw_board()

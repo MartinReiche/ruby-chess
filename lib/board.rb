@@ -46,18 +46,13 @@ class Board
   # Check wether field is occupied by own figure
   def is_own_figure?(coords,player)
     coords = to_coords(coords)
-    puts coords.inspect
-    if coords.all? {|i| i.nil? }
+    fig = @fields[coords[0]][coords[1]].figure
+    if fig.nil?
       return false
+    elsif fig.player_id - 1 == player
+      return true
     else
-      fig = @fields[coords[0]][coords[1]].figure
-      if fig.nil?
-        return false
-      elsif fig.player_id - 1 == player
-        return true
-      else
-        return false
-      end
+      return false
     end
   end
   # Check whether any king is checked
