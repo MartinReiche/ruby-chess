@@ -62,7 +62,28 @@ describe Board do
       expect(@board.mate).to eq(2)
     end
   end
-
+  describe '.is_own_figure?' do
+    before(:all) do
+      @board = Board.new
+      @player1 = Player.new(1)
+      @player2 = Player.new(2)
+      @board.add_figure('a8','king',@player1)
+      @board.add_figure('h1','king',@player2)
+    end
+    it "returns false if field is empty" do
+      expect(@board.is_own_figure?('a1',0)).to be false
+    end
+    it "returns false if field is occupied by enemy figure" do
+      expect(@board.is_own_figure?('h1',0)).to be false
+    end
+    it "returns true if field is occupied by own figure" do
+      expect(@board.is_own_figure?('a8',0)).to be true
+    end
+    it "returns false if coordinates are invalid" do
+      expect(@board.is_own_figure?('ass',1)).to be false
+      expect(@board.is_own_figure?('g10',1)).to be false
+    end
+  end
   describe '.set_player' do
     before(:all) do
       @board = Board.new

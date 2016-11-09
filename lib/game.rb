@@ -29,9 +29,10 @@ class Game
   end
   def choose
     status = ask_from
-    until status
+    is_own = @board.is_own_figure?(@from,@active)
+    until status and is_own
       @drawn = true
-      @msg = "Invalid move!"
+      @msg = "Invalid!"
       draw_board()
       status = ask_from
     end
