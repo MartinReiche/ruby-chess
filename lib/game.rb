@@ -2,7 +2,7 @@
 require_relative './chess'
 
 class Game
-  attr_reader :board, :players, :active
+  attr_reader :board, :players, :active, :checked
   # initialize new game object with a Board and 2 Player
   def initialize
     @board = Board.new
@@ -13,12 +13,24 @@ class Game
     @active = 0
   end
   def turn
-    @msg = "Choose a figure."
-    draw_board()
-    choose()
-    status = move()
-    if status == true
-      switch_player()
+    @checked = @board.check
+    @mate = @board.mate
+    if @checked.nil?
+      @msg = "Choose a figure."
+    else
+      @msg = "Choose a figure. Player #{@checked} is checked!" if @checked.class == Fixnum
+      @msg = "Choose a figure. Both players are checked!" if @checked.class == Array
+    end
+    if @mate.nil?
+      draw_board()
+      choose()
+      status = move()
+      if status == true
+        switch_player()
+      end
+    else
+      puts "Player #{@mate} is mate!"
+      sleep(5)
     end
   end
   private
@@ -112,7 +124,7 @@ def init_figures
         if [1,8].include?(n)
           @board.add_figure("#{c}#{n.to_s}","#{fig_seq[j]}",p)
         else
-          @board.add_figure("#{c}#{n.to_s}","pawn",p)
+          # @board.add_figure("#{c}#{n.to_s}","pawn",p)
         end
       end
     end
