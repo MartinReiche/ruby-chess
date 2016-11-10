@@ -73,12 +73,14 @@ class Board
       @checked.uniq!
       @checked.sort!
     end
+    return @checked
   end
   # Check whether any king is mate
-  def mate
+  def mate(before=[])
     player_mate = nil
     self.check
-    unless @checked.nil?
+    return @checked if (before == @checked) and !@checked.empty?
+    unless @checked.empty?
       @checked.each do |id|
         enemy = (id == 1) ? 2 : 1
         king = get_figs(id,King)

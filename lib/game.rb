@@ -2,24 +2,33 @@
 require_relative './chess'
 
 class Game
-  attr_reader :board, :players, :active, :checked
+  attr_reader :board, :players, :active, :checked, :mate
   # initialize new game object with a Board and 2 Player
   def initialize
     @board = Board.new
     @players = [Player.new(1), Player.new(2)]
     init_figures
     @drawn = false
-    @msg = "Test message"
     @active = 0
   end
+  def run
+    while @mate.nil?
+      turn
+    end
+    if !@mate.nil?
+      won = @mate == 1 ? 2:1
+      puts "Game over! Player #{won} has won!"
+    end
+  end
   def turn
+    before = @checked
     @checked = @board.check
-    @mate = @board.mate
-    if @checked.nil?
+    @mate = @board.mate(before)
+    if @checked.empty?
       @msg = "Choose a figure."
     else
-      @msg = "Choose a figure. Player #{@checked} is checked!" if @checked.class == Fixnum
-      @msg = "Choose a figure. Both players are checked!" if @checked.class == Array
+      @msg = "Choose a figure. Player #{@checked[0]} is checked!" if @checked.length == 1
+      @msg = "Choose a figure. Both players are checked!" if @checked.length == 2
     end
     if @mate.nil?
       draw_board()
@@ -28,9 +37,6 @@ class Game
       if status == true
         switch_player()
       end
-    else
-      puts "Player #{@mate} is mate!"
-      sleep(5)
     end
   end
   private
