@@ -1,3 +1,4 @@
+# coding: utf-8
 require_relative './chess'
 
 class Game
@@ -31,7 +32,11 @@ class Game
   
   def move
     @board.set_player(@active+1)
-    @board.move(@from,@to)
+    status = @board.move(@from,@to)
+    if status == false
+      puts "MÖÖÖSE"
+      sleep(2)
+    end
   end
   
   def choose

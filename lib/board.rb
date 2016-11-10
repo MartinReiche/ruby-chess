@@ -101,6 +101,8 @@ class Board
     if fig.nil? or @active.nil?
       return false
     else
+      puts fig.legal?(to,self).inspect
+      sleep(1)
       return false unless fig.legal?(to,self) and fig.player_id == @active
       @fields[to[0]][to[1]].figure = fig
       fig.move(to,self)
