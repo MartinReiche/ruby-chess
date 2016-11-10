@@ -16,7 +16,10 @@ class Game
     @msg = "Choose a figure."
     draw_board()
     choose()
-    move()
+    status = move()
+    if status == true
+      switch_player()
+    end
   end
   private
   def switch_player
@@ -29,16 +32,18 @@ class Game
     # choose()
     @drawn = true
   end
-  
   def move
     @board.set_player(@active+1)
     status = @board.move(@from,@to)
     if status == false
-      puts "MÖÖÖSE"
-      sleep(2)
+      @msg = "Invalid move"
+      draw_board()
+      puts "\n"
+      sleep(1)
+      return false
     end
+    return true
   end
-  
   def choose
     status = ask_from
     status ? (is_own = @board.is_own_figure?(@from,@active)) : is_own = false
@@ -107,7 +112,7 @@ def init_figures
         if [1,8].include?(n)
           @board.add_figure("#{c}#{n.to_s}","#{fig_seq[j]}",p)
         else
-          # @board.add_figure("#{c}#{n.to_s}","pawn",p)
+          @board.add_figure("#{c}#{n.to_s}","pawn",p)
         end
       end
     end
