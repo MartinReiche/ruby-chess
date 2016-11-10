@@ -136,28 +136,28 @@ describe Board do
       @board = Board.new
       @player1 = Player.new(1)
       @player2 = Player.new(2)
-      @board.add_figure('b7','pawn',@player1)
+      @board.add_figure('b1','pawn',@player1)
     end
     it "returns false if origin field is empty" do
       expect(@board.move('c6','e3')).to be false
     end
     it "returns false if no current player is set" do
-      expect(@board = @board.move('b7','b5')).to be false
+      expect(@board = @board.move('b1','b2')).to be false
     end
     it "returns false if current player doesn't owe figure" do
       @board.set_player(2)
-      expect(@board = @board.move('b7','b5')).to be false
+      expect(@board = @board.move('b1','b2')).to be false
     end
     it "returns false for an illegal move" do
       @board.set_player(1)
-      expect(@board.move('b7','e3')).to be false
+      expect(@board.move('b1','e3')).to be false
     end
     it "returns the updated board for a legal move" do
-      expect(@board.fields[1][1].figure).to be_a(Pawn)
-      expect(@board.fields[3][1].figure).to be nil
-      @board = @board.move('b7','b5')
-      expect(@board.fields[1][1].figure).to be nil
-      expect(@board.fields[3][1].figure).to be_a(Pawn)
+      expect(@board.fields[7][1].figure).to be_a(Pawn)
+      expect(@board.fields[6][1].figure).to be nil
+      @board = @board.move('b1','b2')
+      expect(@board.fields[7][1].figure).to be nil
+      expect(@board.fields[6][1].figure).to be_a(Pawn)
     end
   end
 end

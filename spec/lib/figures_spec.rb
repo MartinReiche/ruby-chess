@@ -13,7 +13,7 @@ describe Figure do
 
   describe '.move' do
     before(:all) do
-      @player1 = Player.new(1)
+      @player1 = Player.new(2)
       @board = Board.new
       @white = Pawn.new(@player1,[1,1])
     end
@@ -64,36 +64,25 @@ describe Pawn do
       @player1 = Player.new(1)
       @player2 = Player.new(2)
       @board = Board.new
-      @board.add_figure('e6','knight',@player2)
-      @board.add_figure('b3','knight',@player1)
-      @board.add_figure('f6','knight',@player1)
-      @white = Pawn.new(@player1,[1,4])
-      @black = Pawn.new(@player2,[6,2])
+      @board.add_figure('e3','knight',@player2)
+      @board.add_figure('b6','knight',@player1)
+      @board.add_figure('f3','knight',@player1)
+      @white = Pawn.new(@player1,[6,4])
+      @black = Pawn.new(@player2,[1,2])
     end
     it "returns true for a legal vertical move" do
-      expect(@black.legal?([5,2],@board)).to be true
-      expect(@black.legal?([4,2],@board)).to be true
+      expect(@black.legal?([2,2],@board)).to be true
+      expect(@black.legal?([3,2],@board)).to be true
     end
     it "returns true for a legal diagonal move" do
-      expect(@black.legal?([5,1],@board)).to be true
+      expect(@black.legal?([2,1],@board)).to be true
     end
     it "returns false if field ahead is occupied by enemy" do
-      expect(@white.legal?([2,4],@board)).to be false
+      expect(@white.legal?([5,4],@board)).to be false
     end
     it "returns false for an illegal move" do
-      expect(@white.legal?([2,3],@board)).to be false
-      expect(@white.legal?([2,5],@board)).to be false
-      expect(@white.legal?([1,3],@board)).to be false
-      expect(@white.legal?([1,5],@board)).to be false
-      expect(@white.legal?([0,3],@board)).to be false
-      expect(@white.legal?([0,4],@board)).to be false
-      expect(@white.legal?([0,5],@board)).to be false
-      expect(@black.legal?([5,3],@board)).to be false
-      expect(@black.legal?([6,3],@board)).to be false
-      expect(@black.legal?([7,3],@board)).to be false
-      expect(@black.legal?([6,1],@board)).to be false
-      expect(@black.legal?([7,1],@board)).to be false
-      expect(@black.legal?([7,2],@board)).to be false
+      expect(@white.legal?([3,3],@board)).to be false
+
     end
     it "returns false if target is blocked by own figure" do
       expect(@white.legal?([2,5],@board)).to be false
@@ -103,16 +92,16 @@ describe Pawn do
     before(:all) do
       @player1 = Player.new(1)
       @board = Board.new
-      @white = Pawn.new(@player1,[1,2])
+      @white = Pawn.new(@player1,[6,2])
     end
     it "it can move forward 2 fields before initial move" do
-      expect(@white.legal?([2,2],@board)).to be true
-      expect(@white.legal?([3,2],@board)).to be true
+      expect(@white.legal?([5,2],@board)).to be true
+      expect(@white.legal?([4,2],@board)).to be true
     end
     it "it cannot move forward 2 fields after initial move" do
-      @white.move([2,2],@board)
-      expect(@white.legal?([3,2],@board)).to be true
-      expect(@white.legal?([4,2],@board)).to be false
+      @white.move([5,2],@board)
+      expect(@white.legal?([4,2],@board)).to be true
+      expect(@white.legal?([3,2],@board)).to be false
     end
   end
 end

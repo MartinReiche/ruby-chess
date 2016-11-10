@@ -54,12 +54,12 @@ class Pawn < Figure
     self.get_attr(player,coords)
     if @color == "white"
       @sign = "\u2659"
-      @translate = [[1,0],[2,0]]
-      @attack = [[1,1],[1,-1]]
-    else
-      @sign = "\u265F"
       @translate = [[-1,0],[-2,0]]
       @attack = [[-1,1],[-1,-1]]
+    else
+      @sign = "\u265F"
+      @translate = [[1,0],[2,0]]
+      @attack = [[1,1],[1,-1]]
     end
   end
   private

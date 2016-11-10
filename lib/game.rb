@@ -15,18 +15,25 @@ class Game
     @msg = "Choose a figure."
     draw_board()
     choose()
+    move()
   end
   private
   def switch_player
     @active == 0 ? @active = 1 : @active = 0
   end
-  def draw_board
-    clear_screen(15) if @drawn
+  def draw_board(clear=15)
+    clear_screen(clear) if @drawn
     print "\n   #{@msg}\n"
     @board.display
     # choose()
     @drawn = true
   end
+  
+  def move
+    @board.set_player(@active+1)
+    @board.move(@from,@to)
+  end
+  
   def choose
     status = ask_from
     status ? (is_own = @board.is_own_figure?(@from,@active)) : is_own = false
@@ -40,13 +47,12 @@ class Game
     @msg = "Choose destination."
     draw_board()
     status = ask_to
-    until status
-      @drawn = true
+    unless status 
       @msg = "Invalid move!"
-      draw_board()
+      @drawn = true
+      draw_board(15)
       status = ask_to
     end
-    @drawn = true
   end
   def ask_from
     print "\n" + ("\e[A\e[K") + ("   #{@players[@active].name}, from >> ") 
@@ -54,7 +60,7 @@ class Game
     return valid?(@from)
   end
   def ask_to
-    print "\n" + ("\e[A\e[K") + ("   #{@players[@active].name}, to >> ") 
+    print "\n" + ("\e[A\e[K") + ("   #{@players[@active].name}, #{@from} to >> ") 
     @to = gets.chomp
     return valid?(@to)
   end
@@ -78,7 +84,6 @@ class Game
     end
     (r and c) ? true : false
   end
-
 end
 
 def reset_board
@@ -97,7 +102,7 @@ def init_figures
         if [1,8].include?(n)
           @board.add_figure("#{c}#{n.to_s}","#{fig_seq[j]}",p)
         else
-          @board.add_figure("#{c}#{n.to_s}","pawn",p)
+          # @board.add_figure("#{c}#{n.to_s}","pawn",p)
         end
       end
     end
