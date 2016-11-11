@@ -13,7 +13,13 @@ class Game
   end
   def run
     while @mate.nil?
+      @checked = @board.check
       turn
+      @mate = @board.mate(@checked)
+      after = @board.check
+      if after[0] == @board.active
+        @mate = @board.active
+      end
     end
     if !@mate.nil?
       won = @mate == 1 ? 2:1
@@ -21,16 +27,14 @@ class Game
     end
   end
   def turn
-    before = @checked
-    @checked = @board.check
-    @mate = @board.mate(before)
     if @checked.empty?
       @msg = "Choose a figure."
     else
       @msg = "Choose a figure. Player #{@checked[0]} is checked!" if @checked.length == 1
       @msg = "Choose a figure. Both players are checked!" if @checked.length == 2
     end
-    if @mate.nil?
+    status = false
+    until status
       draw_board()
       choose()
       status = move()
@@ -47,7 +51,6 @@ class Game
     clear_screen(clear) if @drawn
     print "\n   #{@msg}\n"
     @board.display
-    # choose()
     @drawn = true
   end
   def move
@@ -130,7 +133,7 @@ def init_figures
         if [1,8].include?(n)
           @board.add_figure("#{c}#{n.to_s}","#{fig_seq[j]}",p)
         else
-          # @board.add_figure("#{c}#{n.to_s}","pawn",p)
+          @board.add_figure("#{c}#{n.to_s}","pawn",p)
         end
       end
     end
