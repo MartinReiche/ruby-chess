@@ -7,9 +7,25 @@ class Game
   def initialize
     @board = Board.new
     @players = [Player.new(1), Player.new(2)]
-    init_figures
     @drawn = false
     @active = 0
+  end
+  def start
+    init_figures()
+    run()
+  end
+  private
+  def opt(str)
+    if ["menu","m","h","help","o","options","s","save"].include?(str.downcase)
+      clear_screen(15)
+      print "\n\n   Options\n\n\n"
+      print "   n - start new game\n"
+      print "   l - load game\n"
+      print "   s - save game\n"
+      print "   q - quit game\n\n\n\n\n\n"
+      print "\n" + ("\e[A\e[K") + ("   choose option >> ")
+      option = gets.chomp
+    end
   end
   def run
     while @mate.nil?
@@ -43,7 +59,6 @@ class Game
       end
     end
   end
-  private
   def switch_player
     @active == 0 ? @active = 1 : @active = 0
   end
@@ -88,11 +103,13 @@ class Game
   def ask_from
     print "\n" + ("\e[A\e[K") + ("   #{@players[@active].name}, from >> ") 
     @from = gets.chomp
+    opt(@from)
     return valid?(@from)
   end
   def ask_to
     print "\n" + ("\e[A\e[K") + ("   #{@players[@active].name}, #{@from} to >> ") 
     @to = gets.chomp
+    opt(@to)
     return valid?(@to)
   end
   def valid?(str)
