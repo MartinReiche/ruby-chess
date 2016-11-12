@@ -68,7 +68,6 @@ module Chess
       return ret
     end
   end
-  
 end
 
 

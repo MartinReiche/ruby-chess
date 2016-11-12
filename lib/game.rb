@@ -6,10 +6,12 @@ class Game
   # initialize new game object with a Board and 2 Player
   def initialize
     @board = Board.new
-    @players = [Player.new(1), Player.new(2)]
     @drawn = false
     @active = 0
     @quit = false
+  end
+  def play
+    welcome()
   end
   def start
     init_figures()
@@ -19,6 +21,44 @@ class Game
     @path = str
   end
   private
+  def welcome
+    clear_screen(15) if @drawn
+    print "\n   Welcome to Ruby Chess\n\n\n"
+    print "   n - start new game\n"
+    print "   l - load game\n"
+    print "   q - quit game\n\n\n\n\n\n"
+    print "   Author: Martin Reiche\n\n"
+    print "\n" + ("\e[A\e[K") + ("   choose option >> ")
+    option = gets.chomp
+    case option.downcase
+    when "n"
+      initialize()
+      @drawn = true
+      start()
+    when "l"
+      status = load_game()
+      if status
+        @drawn = true
+        run()
+      elsif !status and !@drawn
+        @drawn = true
+        welcome()
+      end
+    when "q"
+      clear_screen(15)
+      abort
+    end
+  end
+  def start
+    names = []
+    2.times do |i|
+      print ("\e[A\e[K") + ("   Name of Player #{i+1} >> ")
+      names << gets.chomp
+    end
+    @players = [Player.new(1,names[0]), Player.new(2,names[1])]
+    init_figures()
+    run()
+  end
   def save_game
     s = Chess::Savegame.new
     s.b = @board
@@ -38,11 +78,12 @@ class Game
       @checked = s.c
       @mate = s.m
     end
+    return status
   end
-  def opt(str)
+  def opt(str,msg="Options")
     if ["menu","m","h","help","o","options","s","save"].include?(str.downcase)
       clear_screen(15)
-      print "\n\n   Options\n\n\n"
+      print "\n\n   #{msg}\n\n\n"
       print "   n - start new game\n"
       print "   l - load game\n"
       print "   s - save game\n"
@@ -77,8 +118,13 @@ class Game
       end
     end
     if !@mate.nil?
-      won = @mate == 1 ? 2:1
-      puts "Game over! Player #{won} has won!"
+      won = (@mate == 1) ? (2):(1)
+      print ("\e[A\e[K") + ("   GAME OVER! #{@players[won-1].name} has won! ")
+      print "[Press any key to continue]"
+      press = gets.chomp
+      @mate, @checked = nil, nil
+      @active = 0
+      welcome()
     end
   end
   def turn
