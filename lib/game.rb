@@ -19,7 +19,7 @@ class Game
     @path = str
   end
   private
-  def save
+  def save_game
     s = Chess::Savegame.new
     s.b = @board
     s.p = @players
@@ -28,10 +28,16 @@ class Game
     s.m = @mate
     s.save(@path)
   end
-  def load
+  def load_game
     s = Chess::Savegame.new
-    s.load(@path)
-    
+    status = s.load(@path)
+    if status
+      @board = s.b
+      @players = s.p
+      @active = s.a
+      @checked = s.c
+      @mate = s.m
+    end
   end
   def opt(str)
     if ["menu","m","h","help","o","options","s","save"].include?(str.downcase)
@@ -49,9 +55,9 @@ class Game
         @drawn = true
         start()
       when "l"
-        load()
+        load_game()
       when "s"
-        save()
+        save_game()
       when "q"
         clear_screen(15)
         abort
