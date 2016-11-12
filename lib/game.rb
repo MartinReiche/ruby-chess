@@ -161,10 +161,6 @@ class Game
     (r and c) ? true : false
   end
 end
-
-def reset_board
-  init_figures
-end
 def clear_screen(lines)
   print "\r" + ("\e[A") * lines + "\e[J"
   @drawn = false
