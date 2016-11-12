@@ -16,12 +16,12 @@ module Chess
     def save(path)
       f_name = get_filename
       File.open("#{path}/save/#{f_name}.save", 'w') {|f| f.write(Marshal.dump(self)) }
-      clear_screen(1)
-      print "   File Saved!\n"
+      # clear_screen(1)
+      print "\e[A\e[K   File Saved!\n"
       sleep(0.5)
     end
-    def load
-      f_name = lookup_filename
+    def load(path)
+      f_name = lookup_filename(path)
     end
     private
     def get_filename
@@ -31,8 +31,21 @@ module Chess
       print "\n" + ("\e[A\e[K") + ("   Enter filename >> ")
       option = gets.chomp
     end
-    def lookup_filename
-      
+    def lookup_filename(path)
+      clear_screen(15)
+      files = Dir.entries("#{path}/save/")
+      saves = []
+      saves = files.select{ |i| i[/\.save$/] }
+      print "\n   Choose a file.\n"
+      # 10 breaks
+      print "\n"
+      saves.each_with_index do |f,i|
+        print "   #{(i+1).to_s}:    #{f}\n"
+      end
+      print "\n" * (10-saves.length) if saves.length < 11
+      print "\n\n" + ("\e[A\e[K") + ("   Enter number >> ")
+      option = gets.chomp
+      clear_screen(saves.length-10) if saves.length > 10
     end
   end
   

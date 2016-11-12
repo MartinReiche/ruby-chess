@@ -30,6 +30,8 @@ class Game
   end
   def load
     s = Chess::Savegame.new
+    s.load(@path)
+    
   end
   def opt(str)
     if ["menu","m","h","help","o","options","s","save"].include?(str.downcase)
@@ -47,7 +49,7 @@ class Game
         @drawn = true
         start()
       when "l"
-        
+        load()
       when "s"
         save()
       when "q"
