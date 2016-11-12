@@ -16,6 +16,18 @@ class Game
     run()
   end
   private
+  def save
+    s = Chess::Savegame.new
+    s.b = @board
+    s.p = @players
+    s.a = @active
+    s.c = @checked
+    s.m = @mate
+    s.save
+  end
+  def load
+    s = Chess::Savegame.new
+  end
   def opt(str)
     if ["menu","m","h","help","o","options","s","save"].include?(str.downcase)
       clear_screen(15)
@@ -34,7 +46,7 @@ class Game
       when "l"
         
       when "s"
-        
+        save()
       when "q"
         clear_screen(15)
         abort
