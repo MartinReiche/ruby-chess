@@ -13,10 +13,12 @@ module Chess
       @c = nil
       @m = nil
     end
-    def save
-      s = Marshal.dump(self)
+    def save(path)
       f_name = get_filename
-      # File.open(f_name, 'w') {|f| f.write(Marshal.dump(s)) }
+      File.open("#{path}/save/#{f_name}.save", 'w') {|f| f.write(Marshal.dump(self)) }
+      clear_screen(1)
+      print "   File Saved!\n"
+      sleep(0.5)
     end
     def load
       f_name = lookup_filename
@@ -24,8 +26,8 @@ module Chess
     private
     def get_filename
       clear_screen(15)
-      print "\n\n   Saving the current game\n"
-      print "\n" *11
+      print "\n\n\n   Saving the current game\n"
+      print "\n" * 10
       print "\n" + ("\e[A\e[K") + ("   Enter filename >> ")
       option = gets.chomp
     end

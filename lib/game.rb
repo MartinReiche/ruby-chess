@@ -2,7 +2,7 @@
 require_relative './chess'
 
 class Game
-  attr_reader :board, :players, :active, :checked, :mate, :quit
+  attr_reader :board, :players, :active, :checked, :mate, :quit, :path
   # initialize new game object with a Board and 2 Player
   def initialize
     @board = Board.new
@@ -15,6 +15,9 @@ class Game
     init_figures()
     run()
   end
+  def set_path(str)
+    @path = str
+  end
   private
   def save
     s = Chess::Savegame.new
@@ -23,7 +26,7 @@ class Game
     s.a = @active
     s.c = @checked
     s.m = @mate
-    s.save
+    s.save(@path)
   end
   def load
     s = Chess::Savegame.new
