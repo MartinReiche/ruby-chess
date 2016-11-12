@@ -39,7 +39,9 @@ class Game
         clear_screen(15)
         abort
       end
+      return true
     end
+    return false
   end
   def run
     while @mate.nil? 
@@ -58,7 +60,7 @@ class Game
   end
   def turn
     if @checked.empty?
-      @msg = "Choose a figure."
+      @msg = "Choose a figure. (m: menu)"
     else
       @msg = "Choose a figure. Player #{@checked[0]} is checked!" if @checked.length == 1
       @msg = "Choose a figure. Both players are checked!" if @checked.length == 2
@@ -117,14 +119,26 @@ class Game
   def ask_from
     print "\n" + ("\e[A\e[K") + ("   #{@players[@active].name}, from >> ") 
     @from = gets.chomp
-    opt(@from)
-    return valid?(@from)
+    status = opt(@from)
+    if status
+      clear_screen(15)
+      draw_board
+      ask_from
+    else
+      return valid?(@from)
+    end
   end
   def ask_to
     print "\n" + ("\e[A\e[K") + ("   #{@players[@active].name}, #{@from} to >> ") 
     @to = gets.chomp
-    opt(@to)
-    return valid?(@to)
+    status = opt(@to)
+    if status
+      clear_screen(15)
+      draw_board
+      ask_to
+    else
+      return valid?(@to)
+    end
   end
   def valid?(str)
     str = str.downcase.strip.chars
